@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: manage tasks Application
+  data:
+    mongodb:
+      database: manageTasksDB
+      port: 27018

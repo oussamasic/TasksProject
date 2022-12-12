@@ -1,0 +1,85 @@
+<h2>Taks Details</h2>
+
+<button class="btn btn-info" data-toggle="modal" (click)="getAllTasks()">
+  List of all tasks
+</button>
+
+<button
+  class="btn btn-info"
+  data-toggle="modal"
+  (click)="getAllCompletedTasks()"
+  style="margin-left: 15px"
+>
+  List of Completed tasks
+</button>
+<button
+  class="btn btn-info"
+  data-toggle="modal"
+  (click)="getAllIncomletedTaks()"
+  style="margin-left: 15px"
+>
+  List of Incompleted tasks
+</button>
+
+<table class="table table-striped" [ngStyle]="{ 'margin-top': '15px' }">
+  <thead>
+    <tr>
+      <th>Identifier</th>
+      <th>Description</th>
+
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let task of tasks">
+      <td>{{ task.id }}</td>
+      <td>{{ task.description }}</td>
+      <td [ngStyle]="{ 'font-weight': 'bold' }">
+        {{ getTasksStatus(task.complete) }}
+      </td>
+      <td>
+        <button
+          routerLink="{{ task.id }}"
+          matTooltip="show task"
+          class="btn btn-info"
+          style="margin-left: 5px"
+        >
+          Show Task
+        </button>
+        <button
+          mat-raised-button
+          matTooltip="Delete Taks"
+          class="btn btn-info"
+          style="margin-left: 5px"
+          [disabled]="!task.complete"
+          (click)="inCompleteTask(task.id)"
+        >
+          Make in progress
+        </button>
+
+        <button
+          mat-raised-button
+          matTooltip="Delete Taks"
+          class="btn btn-info"
+          style="margin-left: 5px"
+          [disabled]="task.complete"
+          (click)="completeTask(task.id)"
+        >
+          Complete task
+        </button>
+
+        <button
+          mat-raised-button
+          matTooltip="Delete Taks"
+          class="btn btn-danger"
+          style="margin-left: 5px"
+          (click)="deleteTask(task.id)"
+        >
+          Delete task
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

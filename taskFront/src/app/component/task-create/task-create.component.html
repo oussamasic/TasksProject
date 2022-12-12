@@ -1,0 +1,45 @@
+<div *ngIf="submitted; then creationOk; else createMode"></div>
+
+<ng-template #creationOk>
+  <div>
+    <h3>The task is created successfully!</h3>
+    <button class="btn btn-success" (click)="newTask()">Add More Task</button>
+  </div>
+</ng-template>
+
+<ng-template #createMode>
+  <div>
+    <p>Create a Task</p>
+    <form [formGroup]="form" #saveperson (ngSubmit)="createTask()">
+      <div class="form-group">
+        <label for="name">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="description"
+          data-toggle="tooltip"
+          data-placement="right"
+          title="Saisir une description"
+        />
+        <div
+          class="alert alert-danger"
+          *ngIf="
+            form.get('description').touched && form.get('description').invalid
+          "
+          [ngStyle]="{ 'margin-top': '5px' }"
+        >
+          <span *ngIf="form.get('description').errors.required"
+            >description is Required</span
+          >
+          <span *ngIf="form.get('description').errors.minlength">
+            MinLength Error : 5 characters are required
+          </span>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid" class="btn btn-success">
+        Create Task
+      </button>
+    </form>
+  </div>
+</ng-template>

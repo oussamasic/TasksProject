@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="col-md-offset-1">
+    <h1>Welcome to My application!</h1>
+  </div>
+
+  <button routerLink="/tasks" class="btn btn-info" data-toggle="modal">
+    List of tasks
+  </button>
+
+  <button
+    routerLink="/addTask"
+    class="btn btn-info"
+    style="margin-left: 10px"
+    data-toggle="modal"
+  >
+    Add new Task
+  </button>
+
+  <br />
+  <router-outlet></router-outlet>
+</div>

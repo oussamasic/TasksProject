@@ -1,0 +1,44 @@
+<br />
+
+<div *ngIf="taskFound; then taskFounded; else notFound"></div>
+
+<ng-template #notFound>
+  <div>
+    <h3>The task with id {{ taskId }} not found!</h3>
+  </div>
+</ng-template>
+
+<ng-template #taskFounded>
+  <div class="row">
+    <div class="col-12">
+      <div class="read-only-field">
+        <label>Identifier :</label>
+        <div>
+          {{ task?.id }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="read-only-field">
+        <label>Description :</label>
+        <div>
+          {{ task?.description }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="read-only-field">
+        <label>Status :</label>
+        <div>
+          {{ getTasksStatus(task?.complete) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
