@@ -1,0 +1,22 @@
+db = db.getSiblingDB('manageTasksDB');
+
+// Create DB user
+
+if (! db.getUser("{{ mongodb.manageTasksDB.user }}")) {
+    db.createUser(
+        {
+            user: "crudUser",
+            pwd: "********",
+            roles: '[{ role: "readWrite", db: "manageTasksDB" }]'
+        }
+    )
+}
+else {
+    db.updateUser(
+        "{{ mongodb.manageTasksDB.user }}",
+        {
+            pwd: "*******",
+            roles: '[{ role: "readWrite", db: "manageTasksDB" }]'
+        }
+    )
+}

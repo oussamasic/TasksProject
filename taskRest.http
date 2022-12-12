@@ -1,0 +1,39 @@
+### create a task
+POST http://localhost:8080/api/tasks
+accept: application/json
+content-type: application/json
+
+{
+    "description" :"tejhgjh",
+    "complete" : false
+}
+
+
+### get All tasks
+GET http://localhost:8080/api/tasks/allTasks
+
+### get All Complete tasks
+GET http://localhost:8080/api/tasks/completeTasks
+
+### get All inComplete tasks
+GET http://localhost:8080/api/tasks/incompleteTasks
+
+### get task by id
+GET http://localhost:8080/api/tasks/6393b95eff94534d02156bed9b
+
+### delete task by id
+DELETE  http://localhost:8080/api/tasks/6393c5648294ac24466b2a14
+
+
+### update a task
+PUT http://localhost:8080/api/tasks/6393b95e94534d02156bed9b
+accept: application/json
+content-type: application/json
+
+{
+    "description" :"hello oussama "
+}
+
+### complete a task
+PUT http://localhost:8080/api/tasks/6393b8bd8f929c42369eb72a/complete
+
