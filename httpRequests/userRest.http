@@ -1,0 +1,13 @@
+### create a task
+POST http://localhost:8080/api/users
+accept: application/json
+content-type: application/json
+
+{
+
+    "firstName" : "fghfg",
+    "lastName" : "rtyrty",
+    "email" :"oussamaa@gmail.com",
+    "authorized" : false,
+    "status" : "ACTIF" 
+}

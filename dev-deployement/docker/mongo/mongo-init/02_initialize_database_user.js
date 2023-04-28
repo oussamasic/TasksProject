@@ -7,7 +7,7 @@ if (! db.getUser("manageTasksDB.user")) {
         {
             user: "crudUser",
             pwd: "oussama",
-            roles: [{ role: "readWrite", db: "manageTasksDB" }]
+            roles: '[{ role: "readWrite", db: "manageTasksDB" }]'
         }
     )
 }
@@ -16,7 +16,8 @@ else {
         "manageTasksDB.user",
         {
             pwd: "oussama",
-            roles: [{ role: "readWrite", db: "manageTasksDB" }]
+            roles: '[{ role: "readWrite", db: "manageTasksDB" }]'
         }
     )
 }
+

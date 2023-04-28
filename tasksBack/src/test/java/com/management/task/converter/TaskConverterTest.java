@@ -2,7 +2,6 @@ package com.management.task.converter;
 
 import com.management.task.dto.Task;
 import com.management.task.model.TaskModel;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -11,10 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 class TaskConverterTest {
-
-    @BeforeEach
-    public void setUp() {
-    }
 
     @Test
     void convertTaskToTaskModelTest() {

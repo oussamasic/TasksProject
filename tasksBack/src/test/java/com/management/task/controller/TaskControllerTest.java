@@ -54,6 +54,7 @@ class TaskControllerTest {
     @Test
     void testCreateTask() {
         Task task = new Task();
+        task.setDescription("description");
         taskController.createTask(task);
         verify(taskService).createTask(task);
     }
@@ -61,6 +62,7 @@ class TaskControllerTest {
     @Test
     void testUpdateTask() {
         Task task = new Task();
+        task.setDescription("description");
         taskController.updateTask("taskId", task);
         verify(taskService).updateTask(task, "taskId");
     }

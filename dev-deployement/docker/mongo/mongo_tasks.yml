@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  mongo-dev:
+    image: mongo:latest
+    container_name: task-mongo
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongod_dbuser_admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongod_dbpwd_admin
+    ports:
+      - "27019:27019"
+    volumes:
+      - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
+
+    # no --auth is needed here as presence of username and password add this option automatically
+    command: mongod --replSet "rs0" --port=27019
+
+  mongo-express-dev:
+    container_name: task-mongo-express
+    image: mongo-express
+    restart: always
+    ports:
+      - "8111:8081"
+    depends_on:
+      - mongo-dev
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongod_dbuser_admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongod_dbpwd_admin
