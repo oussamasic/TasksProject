@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,7 +59,7 @@ public class TaskController {
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    public void updateTask(final @PathVariable("taskId") String id, @RequestBody final Task task) {
+    public void updateTask(final @PathVariable("taskId") String id, @RequestBody @Valid final Task task) {
         LOGGER.log(Level.FINE, "Update task by Id {} " , id);
         UtilsFunctions.checkDescription(task);
         taskService.updateTask(task,id);
@@ -83,9 +84,9 @@ public class TaskController {
     }
 
     @PostMapping()
-    public void createTask(@RequestBody final Task task) {
+    public void createTask(final @Valid @RequestBody Task task) {
         LOGGER.info("Create a Task");
-        UtilsFunctions.checkDescription(task);
+        //UtilsFunctions.checkDescription(task);
         taskService.createTask(task);
     }
 

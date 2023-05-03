@@ -3,12 +3,14 @@ package com.management.task.controller;
 import com.management.task.dto.User;
 import com.management.task.service.UserService;
 import com.management.task.utils.CommonConstants;
+import com.management.task.utils.UtilsFunctions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.logging.Logger;
 
 @RestController
@@ -26,9 +28,8 @@ public class UserController {
     }
 
     @PostMapping()
-    public void createUser(@RequestBody final User user) {
+    public void createUser(final @Valid @RequestBody User user) {
         LOGGER.info("Create User");
-        //UtilsFunctions.checkDescription(task);
         userService.createUser(user);
     }
 }

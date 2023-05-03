@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Length;
-import javax.validation.constraints.NotNull;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Setter
@@ -18,8 +18,8 @@ import java.io.Serializable;
 public class Task implements Serializable {
 
     private String id;
-    @NotNull
-    @Length(min = 5)
+    @NotNull(message = "Description cannot be null")
+    @Size(min = 10, max = 100)
     private String description;
     private boolean complete;
 }

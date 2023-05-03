@@ -54,7 +54,7 @@ class TaskControllerTest {
     @Test
     void testCreateTask() {
         Task task = new Task();
-        task.setDescription("description");
+        task.setDescription(null);
         taskController.createTask(task);
         verify(taskService).createTask(task);
     }

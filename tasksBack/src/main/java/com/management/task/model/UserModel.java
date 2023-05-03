@@ -1,6 +1,7 @@
 package com.management.task.model;
 
 import com.management.task.utils.MongoDbCollections;
+import com.management.task.utils.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class UserModel {
     private String lastName;
     private String email;
     private boolean authorized;
-    private String status;
+    private UserStatus status;
     private String password;
 
 }
