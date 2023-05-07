@@ -1,13 +1,14 @@
-### create a task
+### create an user
 POST http://localhost:8080/api/users
 accept: application/json
 content-type: application/json
 
 {
 
-    "firstName" : "fghfg",
-    "lastName" : "rtyrty",
-    "email" :"oussamaa@gmail.com",
+    "firstName" : "hjhjh",
+    "lastName" : "fhghf",
+    "email" :"tryrtugjkhk@gmail.com",
     "authorized" : false,
-    "status" : "ACTIF" 
+    "password" : "password",
+    "status" : "ACTIF"
 }

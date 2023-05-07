@@ -5,31 +5,34 @@ import com.management.task.dto.User;
 import com.management.task.exceptions.BadRequestException;
 import com.management.task.model.UserModel;
 import com.management.task.repository.UserRepository;
+import com.management.task.service.kafka.UserProducerService;
 import com.management.task.utils.PasswordEncoder;
 import com.management.task.utils.UserStatus;
 import com.management.task.utils.UtilsFunctions;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @Service
 @Getter
 @Setter
 public class UserService {
 
-    @Autowired
     private final UserRepository userRepository;
 
-    private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
+    private final UserProducerService userProducerService;
 
-    public UserService(UserRepository userRepository) {
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+
+    @Autowired
+    public UserService(UserRepository userRepository, UserProducerService userProducerService) {
         this.userRepository = userRepository;
+        this.userProducerService = userProducerService;
     }
 
 
@@ -37,24 +40,34 @@ public class UserService {
     public void createUser(User user) {
         LOGGER.info("creating user");
         if(Objects.isNull(user)) {
-            LOGGER.log(Level.WARNING, "The request body should not be null");
+            LOGGER.warn("The request body should not be null");
             throw new BadRequestException("The request body should not be null");
         }
         user.setStatus(UserStatus.INACTIF);
         if(!UtilsFunctions.isPatternEmailMatches(user.getEmail())) {
-            LOGGER.log(Level.WARNING, "The user email passed is not valid");
+            LOGGER.error("The user email passed is not valid");
             throw new BadRequestException("The user email passed is not valid");
         }
 
         if(Objects.nonNull(getUserByEmail(user.getEmail())) ) {
-            LOGGER.log(Level.WARNING, "user with the same email exists");
+            LOGGER.error("user with the same email exists");
             throw new BadRequestException("user with the same email exists");
         }
         UserModel userModel = UserConverter.convertUserDtoToUserModel(user);
+
+        if(Objects.isNull(userModel.getPassword()) ) {
+            LOGGER.error("no password passed in the request");
+            throw new BadRequestException("you must specify a password");
+        }
+
         final String hashedPassword = PasswordEncoder.hashPassword(userModel.getPassword());
         userModel.setPassword(hashedPassword);
 
         userRepository.save(userModel);
+
+        LOGGER.info("User created with id : {} ", userModel.getId());
+        this.userProducerService.createUSer(user);
+
     }
 
     private UserModel getUserByEmail(String email) {

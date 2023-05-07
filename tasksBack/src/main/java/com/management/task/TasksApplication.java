@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import org.springframework.kafka.annotation.EnableKafka;
 
+@EnableKafka
 @SpringBootApplication
 public class TasksApplication implements CommandLineRunner {
 
@@ -19,7 +21,7 @@ public class TasksApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println("VITAMUI SpringBoot Application started:");
+		System.out.println("User Tasks SpringBoot Application started:");
 		System.out.println("spring.application.name: " + env.getProperty("spring.application.name"));
 
 	}

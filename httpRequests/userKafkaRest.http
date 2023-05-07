@@ -1,0 +1,2 @@
+### publish a message
+POST http://localhost:8080/api/user-kafka/publish?message=testOussama
