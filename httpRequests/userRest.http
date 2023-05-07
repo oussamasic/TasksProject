@@ -5,10 +5,26 @@ content-type: application/json
 
 {
 
-    "firstName" : "hjhjh",
-    "lastName" : "fhghf",
-    "email" :"tryrtugjkhk@gmail.com",
+    "firstName" : "oussama",
+    "lastName" : "zerouali",
+    "email" :"oussamatest@gmail.com",
     "authorized" : false,
     "password" : "password",
     "status" : "ACTIF"
 }
+
+### login user
+POST http://localhost:8080/api/users/login
+accept: application/json
+content-type: application/json
+
+{
+
+    "email" :"oussamatest@gmail.com",
+    "password" : "password" 
+}
+
+### logout user
+POST http://localhost:8080/api/users/logout/tokenID
+accept: application/json
+content-type: application/json
