@@ -1,7 +1,7 @@
-docker-compose -f ./mongo_tasks.yml up -d
 
 echo "Execute scripts to initialize the database"
 
- mongo --shell mongo-init.js
+mongo --shell init-mongodb/01_initialize_database_user.js
+mongo --shell init-mongodb/02_create_collections.js
 
 echo "Mongod service is started and the database is initialized"

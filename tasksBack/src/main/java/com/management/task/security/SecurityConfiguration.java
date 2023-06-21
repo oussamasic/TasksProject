@@ -39,9 +39,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-
-
-
     private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
         new AntPathRequestMatcher("/api/**")
     );

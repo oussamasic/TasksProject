@@ -15,7 +15,7 @@ spring:
   data:
     mongodb:
       database: manageTasksDB
-      port: 27018
+      port: 27017
 
 kafka:
   bootstrapAddress: localhost:9092
