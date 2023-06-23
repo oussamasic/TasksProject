@@ -124,5 +124,8 @@
         }
       }
     }},
-  "defaultProject": "taskFront"
+  "defaultProject": "taskFront",
+  "cli": {
+    "analytics": false
+  }
 }
