@@ -19,6 +19,8 @@
 
 package com.management.task;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +32,8 @@ import org.springframework.kafka.annotation.EnableKafka;
 @SpringBootApplication
 public class TasksApplication implements CommandLineRunner {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(TasksApplication.class);
+
 	@Autowired
 	private Environment env;
 
@@ -39,10 +43,10 @@ public class TasksApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
-		System.out.println("User Tasks SpringBoot Application started:");
-		System.out.println("spring.application.name: " + env.getProperty("spring.application.name"));
-
+	public void run(String... args) {
+		final String applicationName = env.getProperty("spring.application.name") ;
+		LOGGER.info("User Tasks SpringBoot Application started:");
+		LOGGER.info("spring.application.name: {}", applicationName);
 	}
 
 }

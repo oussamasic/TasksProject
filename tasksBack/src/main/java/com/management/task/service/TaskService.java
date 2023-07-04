@@ -26,6 +26,8 @@ import com.management.task.model.TaskModel;
 import com.management.task.repository.TaskRepository;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,31 +42,39 @@ public class TaskService {
 
     private static final String TASK_NOT_FOUND = "Task not found";
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskService.class);
+
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
 
     public List<Task> getAll() {
+        LOGGER.debug("get all Task");
         return taskRepository.findAll().stream().map(TaskConverter::convertTaskModelToTaskDto)
             .toList();
 
         }
 
     public void createTask(Task taskDto) {
+        LOGGER.debug("create a task");
         TaskModel taskModel = TaskConverter.convertTaskDtoToTaskModel(taskDto);
         taskRepository.save(taskModel);
     }
 
     public Task getTaskById(String id) {
+        LOGGER.debug("get a task by id : {}", id);
         Optional<TaskModel> taskModelOptional = taskRepository.findById(id);
         if(taskModelOptional.isEmpty()) {
+            LOGGER.error(TASK_NOT_FOUND);
             throw new NotFoundException(TASK_NOT_FOUND);
         }
         return TaskConverter.convertTaskModelToTaskDto(taskModelOptional.get());
     }
     public void updateTask(Task taskDto, String id) {
+        LOGGER.debug("update a task");
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
+            LOGGER.error(TASK_NOT_FOUND);
             throw new NotFoundException(TASK_NOT_FOUND);
         }
         taskDtoOptional.get().setDescription(taskDto.getDescription());
@@ -73,18 +83,22 @@ public class TaskService {
     }
 
     public List<Task> getAllCompleteTasks() {
+        LOGGER.debug("get all completed task");
         return taskRepository.findByComplete(true).stream().map(TaskConverter::convertTaskModelToTaskDto)
             .toList();
     }
 
     public List<Task> getAllInCompleteTasks() {
+        LOGGER.debug("get all incompleted tasks");
         return taskRepository.findByComplete(false).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
     }
 
     public void completeTask(String id) {
+        LOGGER.debug("complete th task with id : {}", id);
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
+            LOGGER.error(TASK_NOT_FOUND);
             throw new NotFoundException(TASK_NOT_FOUND);
         }
         taskDtoOptional.get().setComplete(true);
@@ -92,8 +106,10 @@ public class TaskService {
     }
 
     public void inCompleteTask(String id) {
+        LOGGER.debug("make incomplete th task with id : {}", id);
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
+            LOGGER.error(TASK_NOT_FOUND);
             throw new NotFoundException(TASK_NOT_FOUND);
         }
         taskDtoOptional.get().setComplete(false);
@@ -101,8 +117,10 @@ public class TaskService {
     }
 
     public void deleteTask(String id) {
+        LOGGER.debug("delete th task with id : {}", id);
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
+            LOGGER.error(TASK_NOT_FOUND);
             throw new NotFoundException(TASK_NOT_FOUND);
         }
         taskRepository.deleteById(id);

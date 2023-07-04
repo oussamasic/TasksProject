@@ -19,18 +19,19 @@
 
 package com.management.task.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.security.SecureRandom;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class PasswordEncoder {
 
-    private static final Logger LOGGER = Logger.getLogger(PasswordEncoder.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(PasswordEncoder.class);
 
-    public PasswordEncoder() {
+    private PasswordEncoder() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -45,7 +46,7 @@ public class PasswordEncoder {
     public static boolean checkPassword(String passwordPlainText, String hashedPassword) {
 
         if(Objects.isNull(hashedPassword) || !hashedPassword.startsWith("$2a$")) {
-            LOGGER.log(Level.WARNING, "Invalid hashed password provided for comparison");
+            LOGGER.error("Invalid hashed password provided for comparison");
             throw new IllegalArgumentException("Invalid hashed password provided for comparison");
         }
         return BCrypt.checkpw(passwordPlainText, hashedPassword);
