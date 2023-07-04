@@ -20,17 +20,18 @@
 package com.management.task.controller;
 
 import com.management.task.dto.User;
+import com.management.task.exceptions.BadRequestException;
 import com.management.task.service.UserService;
 import com.management.task.utils.CommonConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.logging.Logger;
+import java.util.Objects;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
@@ -38,9 +39,10 @@ import java.util.logging.Logger;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -48,19 +50,28 @@ public class UserController {
 
     @PostMapping()
     public void createUser(final @Valid @RequestBody User user) {
-        LOGGER.info("Create User");
+        LOGGER.debug("Create User");
         userService.createUser(user);
     }
 
     @PostMapping("/login")
-    public void userLogin(final @Valid @RequestBody User user) {
-        LOGGER.info("login User");
-        userService.login(user);
+    public ResponseEntity<String> userLogin(final @Valid @RequestBody User user) {
+        LOGGER.debug("login User");
+        return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
     }
 
-    @PostMapping("/logout/{tokenId}")
-    public void serLogout(final @PathVariable("tokenId") String tokenId) {
+    @PostMapping("/logout")
+    public void userLogout(@RequestHeader(value = "Authorization") final String tokenUser) {
         LOGGER.info("logout User");
-        userService.logout(tokenId);
+        if(Objects.isNull(tokenUser)) {
+            LOGGER.debug("login User");
+            throw new BadRequestException("The logout operation can't be done");
+        }
+        String token;
+
+        if (tokenUser.startsWith("Bearer ")) {
+            token = tokenUser.substring(7);
+            userService.logout(token);
+        }
     }
 }

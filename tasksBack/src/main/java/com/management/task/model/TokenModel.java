@@ -17,11 +17,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.management.task.security;
+package com.management.task.model;
 
-import org.springframework.stereotype.Component;
+import com.management.task.dto.TokenType;
+import com.management.task.utils.MongoDbCollections;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Component
-public class AuthenticationProvider  {
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
+@Setter
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = MongoDbCollections.TOKENS)
+public class TokenModel {
+
+    @Id
+    private String id;
+
+    @NotNull
+    private Date updatedDate;
+
+    @NotNull
+    private String userRefId;
+
+    @NotNull
+    private TokenType tokenType;
+
+    @NotNull
+    private String jwtToken;
 }

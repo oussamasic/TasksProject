@@ -17,34 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.management.task.model;
+package com.management.task.dto;
 
-import com.management.task.utils.MongoDbCollections;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
-@Setter
+
 @Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = MongoDbCollections.TOKENS)
-public class Token {
+public class Token implements Serializable {
 
-    @Id
     private String id;
 
-    @NotNull
-    @Indexed(name = "idx_token_date", background = true, expireAfterSeconds = 0)
     private Date updatedDate;
 
     @NotNull

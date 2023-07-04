@@ -23,23 +23,20 @@ import com.management.task.converter.UserConverter;
 import com.management.task.dto.User;
 import com.management.task.exceptions.BadRequestException;
 import com.management.task.exceptions.NotFoundException;
-import com.management.task.model.Token;
 import com.management.task.model.UserModel;
-import com.management.task.repository.TokenRepository;
 import com.management.task.repository.UserRepository;
 import com.management.task.service.kafka.UserProducerService;
 import com.management.task.utils.PasswordEncoder;
 import com.management.task.utils.UtilsFunctions;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Getter
@@ -50,29 +47,30 @@ public class UserService {
 
     private final UserProducerService userProducerService;
 
-    private final TokenRepository tokenRepository;
+    private final JwtService jwtService;
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private static final String TOKEN_PREFIX = "TOKEN";
 
+    private static final String  REQUEST_BODY_MANDATORY = "The request body should not be null";
 
     @Autowired
     public UserService(UserRepository userRepository, UserProducerService userProducerService,
-        TokenRepository tokenRepository) {
+                       JwtService jwtService) {
         this.userRepository = userRepository;
         this.userProducerService = userProducerService;
-        this.tokenRepository = tokenRepository;
+        this.jwtService = jwtService;
     }
 
     public void createUser(User user) {
         LOGGER.info("creating user");
         if(Objects.isNull(user)) {
-            LOGGER.warn("The request body should not be null");
-            throw new BadRequestException("The request body should not be null");
+            LOGGER.warn(REQUEST_BODY_MANDATORY);
+            throw new BadRequestException(REQUEST_BODY_MANDATORY);
         }
-        //user.setStatus(UserStatus.INACTIF);
-        if(!UtilsFunctions.isPatternEmailMatches(user.getEmail())) {
+
+         if(!UtilsFunctions.isPatternEmailMatches(user.getEmail())) {
             LOGGER.error("The user email passed is not valid");
             throw new BadRequestException("The user email passed is not valid");
         }
@@ -93,7 +91,7 @@ public class UserService {
 
         userRepository.save(userModel);
 
-        LOGGER.info("User created with id : {} ", userModel.getId());
+        LOGGER.debug("User created with id : {} ", userModel.getId());
         this.userProducerService.createUSer(user);
 
     }
@@ -103,11 +101,13 @@ public class UserService {
         return userModelOptional.orElse(null);
     }
 
-    public void login(User user) {
+    public String login(User user) {
+        LOGGER.debug("Process : user login");
         if(Objects.isNull(user)) {
-            LOGGER.warn("The request body should not be null");
-            throw new BadRequestException("The request body should not be null");
+            LOGGER.warn(REQUEST_BODY_MANDATORY);
+            throw new BadRequestException(REQUEST_BODY_MANDATORY);
         }
+
         if(Objects.isNull(user.getEmail()) || user.getEmail().isEmpty() || user.getEmail().isBlank()) {
             LOGGER.error("email should not be empty");
             throw new BadRequestException("email should not be empty");
@@ -129,27 +129,14 @@ public class UserService {
             throw new BadRequestException("Bad password");
         }
 
-        Token token = new Token();
-        token.setUserRefId(userModel.getId());
-        String tokenId = UUID.randomUUID().toString();
-        token.setId(tokenId);
-        token.setUpdatedDate(new Date());
+        LOGGER.debug("Generating JWT token for the user");
+        return jwtService.generateToken(userModel);
 
-        tokenRepository.save(token);
     }
 
-    public void logout(String tokenId) {
-        if(tokenId == null) {
-            LOGGER.error("invalid token");
-            throw new BadRequestException("invalid token");
-        }
-        final Optional<Token> optToken = tokenRepository.findById(tokenId);
+    public void logout(String jwtToken) {
+        LOGGER.debug("Process : user logout");
 
-        if (optToken.isEmpty()) {
-            LOGGER.error("invalid request");
-            throw new BadRequestException("invalid request");
-        }
-
-        tokenRepository.deleteById(tokenId);
+        jwtService.logout(jwtToken);
     }
 }

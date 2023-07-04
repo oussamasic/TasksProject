@@ -19,14 +19,22 @@
 
 package com.management.task.repository;
 
-import com.management.task.model.Token;
+import com.management.task.model.TokenModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 
 /**
  * MongoDB repository for tokens.
  *
  */
-public interface TokenRepository extends MongoRepository<Token, String> {
+public interface TokenRepository extends MongoRepository<TokenModel, String> {
+
+    Optional<TokenModel> findByUserRefIdAndJwtToken(String userRefId, String jwtToken);
+    Optional<TokenModel> findByJwtToken(String jwtToken);
+    List<TokenModel> findByUserRefId(String userRefId);
+    long deleteByUserRefId(String userRefId);
 
 }
