@@ -36,7 +36,7 @@ public class UtilsFunctions {
     }
     public static void checkDescription(Task task) throws BadRequestException {
         if(Objects.nonNull(task)  && task.getDescription().length()<5) {
-            throw new BadRequestException("Invalide description, the min length is 5");
+            throw new BadRequestException("InValide description, the min length is 5");
         }
     }
 

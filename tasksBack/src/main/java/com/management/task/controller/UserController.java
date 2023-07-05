@@ -54,15 +54,15 @@ public class UserController {
         userService.createUser(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping(CommonConstants.LOGIN)
     public ResponseEntity<String> userLogin(final @Valid @RequestBody User user) {
         LOGGER.debug("login User");
         return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
     }
 
-    @PostMapping("/logout")
+    @PostMapping(CommonConstants.LOGOUT)
     public void userLogout(@RequestHeader(value = "Authorization") final String tokenUser) {
-        LOGGER.info("logout User");
+        LOGGER.debug("logout User");
         if(Objects.isNull(tokenUser)) {
             LOGGER.debug("login User");
             throw new BadRequestException("The logout operation can't be done");

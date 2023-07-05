@@ -51,8 +51,6 @@ public class UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
-    private static final String TOKEN_PREFIX = "TOKEN";
-
     private static final String  REQUEST_BODY_MANDATORY = "The request body should not be null";
 
     @Autowired
