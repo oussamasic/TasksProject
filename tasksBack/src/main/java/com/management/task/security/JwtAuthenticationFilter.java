@@ -21,8 +21,10 @@ package com.management.task.security;
 
 import com.management.task.converter.UserConverter;
 import com.management.task.dto.User;
-import com.management.task.exceptions.NotFoundException;
+import com.management.task.exceptions.UnAuthorizedException;
+import com.management.task.model.TokenModel;
 import com.management.task.model.UserModel;
+import com.management.task.repository.TokenRepository;
 import com.management.task.repository.UserRepository;
 import com.management.task.service.JwtService;
 import jakarta.servlet.FilterChain;
@@ -30,6 +32,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -38,17 +42,25 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+
     private final UserRepository userRepository;
 
+    private final TokenRepository tokenRepository;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    private static final String UNAUTHORIZED_REQUEST = "You are not authorized to make this request";
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException, UnAuthorizedException {
 
         String authHeader = request.getHeader("Authorization");
 
@@ -63,7 +75,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserModel userDetails = userRepository.findByEmail(userEmail)
-                    .orElseThrow(()-> new NotFoundException("No User found"));
+                    .orElseThrow(()->
+                            new UnAuthorizedException(UNAUTHORIZED_REQUEST));
+
+            Optional<TokenModel> optionalTokenModel = tokenRepository
+                    .findByUserRefIdAndJwtToken(userDetails.getId(), token);
+
+            if(optionalTokenModel.isEmpty()) {
+                LOGGER.error(UNAUTHORIZED_REQUEST);
+                throw new UnAuthorizedException(UNAUTHORIZED_REQUEST);
+            }
 
             User userDto = UserConverter.convertUserModelToUserDto(userDetails);
             userDto.setPassword(null);
