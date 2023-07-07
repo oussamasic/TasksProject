@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Date;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -33,13 +35,16 @@ class TaskConverterTest {
     @Test
     void convertTaskToTaskModelTest() {
         // Given
-        Task task = new Task("id", "description", true);
+        Task task = new Task("id", "description", true, "userId",
+                new Date(),"taskTitle", new Date(), new Date());
         // When
         TaskModel taskModel = TaskConverter.convertTaskDtoToTaskModel(task);
 
         // Then
         assertThat(taskModel.getDescription()).isEqualTo("description");
         assertThat(taskModel.getId()).isEqualTo("id");
+        assertThat(taskModel.getTitle()).isEqualTo("taskTitle");
+        assertThat(taskModel.getUserId()).isEqualTo("userId");
         assertThat(taskModel.isComplete()).isTrue();
         assertThat(taskModel).isEqualToComparingFieldByField(task);
     }
@@ -47,7 +52,8 @@ class TaskConverterTest {
     @Test
     void convertTaskModelToTask() {
         // Given
-        TaskModel taskModel = new TaskModel("id", "description", false);
+        TaskModel taskModel = new TaskModel("id", "description", false, "userId",
+                new Date(),"taskTitle", new Date(), new Date());
 
         // When
         Task task = TaskConverter.convertTaskModelToTaskDto(taskModel);
@@ -55,6 +61,8 @@ class TaskConverterTest {
         // Then
         assertThat(task.getDescription()).isEqualTo("description");
         assertThat(task.getId()).isEqualTo("id");
+        assertThat(task.getTitle()).isEqualTo("taskTitle");
+        assertThat(task.getUserId()).isEqualTo("userId");
         assertThat(task.isComplete()).isFalse();
         assertThat(task).isEqualToComparingFieldByField(taskModel);
     }

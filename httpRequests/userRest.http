@@ -1,3 +1,7 @@
+@user-id = 649dc3c1f745b9562b6541e2
+@task-id = 64a71d1ceb024644ef23845a
+
+
 ### create an user
 POST http://localhost:8080/api/users
 accept: application/json
@@ -28,3 +32,46 @@ content-type: application/json
 POST http://localhost:8080/api/users/logout/tokenID
 accept: application/json
 content-type: application/json
+
+
+### create a task for the user
+POST http://localhost:8080/api/users/{{user-id}}/tasks
+accept: application/json
+content-type: application/json
+
+{
+    "description" :"new description test test",
+    "complete" : false,
+    "title" : "new new title",
+    "startDate" : "2023-07-06",
+    "endDate" : "2025-12-06"
+}
+
+### get the details of the user task
+GET http://localhost:8080/api/users/{{user-id}}/tasks/{{task-id}}
+
+
+### get all the tasks of an user
+GET http://localhost:8080/api/users/{{user-id}}/tasks
+
+
+### update the user task
+PUT http://localhost:8080/api/users/{{user-id}}/tasks/{{task-id}}
+accept: application/json
+content-type: application/json
+
+{
+    "description" :"how how how how",
+    "complete" : false,
+    "title" : "new new title",
+    "startDate" : "2023-07-06",
+    "endDate" : "2025-12-06"
+}
+
+
+### delete the user task
+http://localhost:8080/api/users/{{user-id}}/tasks/{{task-id}}
+
+
+### delete all the user tasks
+DELETE http://localhost:8080/api/users/{{user-id}}/tasks

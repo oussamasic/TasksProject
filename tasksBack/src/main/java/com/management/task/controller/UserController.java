@@ -19,8 +19,10 @@
 
 package com.management.task.controller;
 
+import com.management.task.dto.Task;
 import com.management.task.dto.User;
 import com.management.task.exceptions.BadRequestException;
+import com.management.task.exceptions.UnAuthorizedException;
 import com.management.task.service.UserService;
 import com.management.task.utils.CommonConstants;
 import org.slf4j.Logger;
@@ -31,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -61,17 +64,56 @@ public class UserController {
     }
 
     @PostMapping(CommonConstants.LOGOUT)
-    public void userLogout(@RequestHeader(value = "Authorization") final String tokenUser) {
+    public void userLogout(@RequestHeader(value = "Authorization") final String userToken) {
         LOGGER.debug("logout User");
-        if(Objects.isNull(tokenUser)) {
-            LOGGER.debug("login User");
+        if(Objects.isNull(userToken)) {
+            LOGGER.error("The logout operation can't be done");
             throw new BadRequestException("The logout operation can't be done");
         }
         String token;
 
-        if (tokenUser.startsWith("Bearer ")) {
-            token = tokenUser.substring(7);
+        if (userToken.startsWith("Bearer ")) {
+            token = userToken.substring(7);
             userService.logout(token);
         }
     }
+
+    @PostMapping("/{userId}/tasks")
+    public void createUserTask(@RequestBody Task task, @PathVariable("userId") String userId)
+            throws BadRequestException, UnAuthorizedException {
+        LOGGER.debug("Create a task for an user");
+        userService.createUserTask(task,userId);
+    }
+    @GetMapping("/{userId}/tasks")
+    public List<Task> getAllUserTasks(@PathVariable("userId") String userId) {
+        LOGGER.debug("get all the user tasks");
+        return userService.getAllUserTasks(userId);
+    }
+
+    @GetMapping("/{userId}/tasks/{taskId}")
+    public Task getUserTaskDetails(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
+        LOGGER.debug("get a task details of an user");
+        return userService.getUserTaskDetails(taskId, userId);
+    }
+
+    @PutMapping("/{userId}/tasks/{taskId}")
+    public void updateUserTask(@RequestBody Task task, @PathVariable("taskId") String taskId,
+                               @PathVariable("userId") String userId) {
+        LOGGER.debug("update the task");
+        userService.updateUserTask(task, taskId, userId);
+
+    }
+
+    @DeleteMapping("/{userId}/tasks/{taskId}")
+    public void deleteUserTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
+        LOGGER.debug("Delete the task");
+        userService.deleteUserTask(taskId, userId);
+    }
+    @DeleteMapping("/{userId}/tasks")
+    public void deleteAllUserTasks(@PathVariable("userId") String userId) {
+        LOGGER.debug("Delete all the user tasks");
+        userService.deleteAllUserTasks(userId);
+    }
+
+
 }

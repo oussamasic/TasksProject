@@ -20,16 +20,13 @@
 package com.management.task.model;
 
 import com.management.task.utils.MongoDbCollections;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 
 @Setter
@@ -43,7 +40,13 @@ public class TaskModel {
     @Id
     private String id;
     @NotNull
-    @Length(min = 5)
+    @Length(min = 10)
     private String description;
     private boolean complete;
+    private String userId;
+    private Date creationDate;
+    @Length(min = 5, max = 100)
+    private String title;
+    private Date startDate;
+    private Date endDate;
 }

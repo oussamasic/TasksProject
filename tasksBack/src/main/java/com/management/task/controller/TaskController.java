@@ -29,7 +29,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:4200")
@@ -38,29 +40,34 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TaskController.class);
 
     @Autowired
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
 
-    @GetMapping(CommonConstants.ALL_TASKS)
-    public List<Task> getAll() {
-        LOGGER.debug("Get All Tasks");
-        return taskService.getAll();
-    }
+    @GetMapping()
+    public List<Task> getAllTasks(@RequestParam(required = false) String status) {
 
-    @GetMapping(CommonConstants.COMPLETE_TASKS)
-    public List<Task> getAllCompleteTasks() {
-        LOGGER.debug("Get All Complete Tasks");
-        return taskService.getAllCompleteTasks();
-    }
+        List<Task> taskList = new ArrayList<>();
 
-    @GetMapping(CommonConstants.INCOMPLETE_TASKS)
-    public List<Task> getAllInCompleteTasks() {
-        LOGGER.debug("Get All InComplete Tasks");
-        return taskService.getAllInCompleteTasks();
+        if(Objects.isNull(status)) {
+            LOGGER.debug("Get All Tasks");
+            taskList =  taskService.getAll();
+        }
+
+        else if(status.equals("complete")) {
+            LOGGER.debug("Get All Complete Tasks");
+            taskList =  taskService.getAllCompleteTasks();
+        }
+
+        else if(status.equals("incomplete")) {
+            LOGGER.debug("Get All InComplete Tasks");
+            taskList = taskService.getAllInCompleteTasks();
+        }
+
+        return taskList;
     }
 
     @GetMapping(CommonConstants.PATH_ID)

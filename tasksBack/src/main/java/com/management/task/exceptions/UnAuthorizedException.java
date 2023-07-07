@@ -17,27 +17,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.management.task.converter;
+package com.management.task.exceptions;
 
-import com.management.task.dto.User;
-import com.management.task.model.UserModel;
-import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class UserConverter {
+@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+public class UnAuthorizedException extends RuntimeException {
 
-    public static User convertUserModelToUserDto(UserModel userModel) {
-        User userDto = new User();
-        BeanUtils.copyProperties(userModel, userDto);
-        return userDto;
+    private static final long serialVersionUID = 1708664733842323966L;
+
+    public UnAuthorizedException(final String message) {
+        super(message);
     }
 
-    private UserConverter() {
-        throw new IllegalStateException("Utility class");
-    }
-
-    public static UserModel convertUserDtoToUserModel(User user) {
-        UserModel userModel = new UserModel();
-        BeanUtils.copyProperties(user, userModel);
-        return userModel;
+    public UnAuthorizedException(final String message, final Throwable e) {
+        super(message, e);
     }
 }
