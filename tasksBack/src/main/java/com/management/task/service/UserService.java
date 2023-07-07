@@ -19,11 +19,16 @@
 
 package com.management.task.service;
 
+import com.management.task.converter.TaskConverter;
 import com.management.task.converter.UserConverter;
+import com.management.task.dto.Task;
 import com.management.task.dto.User;
 import com.management.task.exceptions.BadRequestException;
 import com.management.task.exceptions.NotFoundException;
+import com.management.task.exceptions.UnAuthorizedException;
+import com.management.task.model.TaskModel;
 import com.management.task.model.UserModel;
+import com.management.task.repository.TaskRepository;
 import com.management.task.repository.UserRepository;
 import com.management.task.service.kafka.UserProducerService;
 import com.management.task.utils.PasswordEncoder;
@@ -33,10 +38,12 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Getter
@@ -45,6 +52,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final TaskRepository taskRepository;
+
     private final UserProducerService userProducerService;
 
     private final JwtService jwtService;
@@ -52,11 +61,15 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private static final String  REQUEST_BODY_MANDATORY = "The request body should not be null";
+    private static final String  TASK_BODY_MANDATORY = "the Task should not be null";
+
+    private static final String TASK_NOT_FOUND = "Task not found";
 
     @Autowired
-    public UserService(UserRepository userRepository, UserProducerService userProducerService,
+    public UserService(UserRepository userRepository, TaskRepository taskRepository, UserProducerService userProducerService,
                        JwtService jwtService) {
         this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
         this.userProducerService = userProducerService;
         this.jwtService = jwtService;
     }
@@ -136,5 +149,116 @@ public class UserService {
         LOGGER.debug("Process : user logout");
 
         jwtService.logout(jwtToken);
+    }
+
+    public User getAuthenticatedUser() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return (User) auth.getPrincipal();
+        }
+        throw new UnAuthorizedException("User is not connected");
+    }
+
+    public void createUserTask(Task task, String userId) {
+        LOGGER.debug("Create a task for the user : {}", userId);
+
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to create this task");
+            throw new UnAuthorizedException("You are not authorized to create this task");
+        }
+        if(Objects.isNull(task)) {
+            LOGGER.error(TASK_BODY_MANDATORY);
+            throw new BadRequestException(TASK_BODY_MANDATORY);
+        }
+
+        TaskModel taskModel = TaskConverter.convertTaskDtoToTaskModel(task);
+        taskModel.setUserId(userId);
+        taskModel.setCreationDate(new Date());
+        taskRepository.save(taskModel);
+    }
+
+    public List<Task> getAllUserTasks(String userId) {
+        LOGGER.debug("get all the tasks of the user : {}", userId);
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to get the list of tasks");
+            throw new UnAuthorizedException("You are not authorized to get the list of tasks");
+        }
+        List<TaskModel> taskModelList = taskRepository.findByUserId(userId);
+        List<Task> taskList = new ArrayList<>();
+        if(!taskModelList.isEmpty()) {
+            taskModelList.forEach(taskModel ->
+                    taskList.add(TaskConverter.convertTaskModelToTaskDto(taskModel)));
+        }
+        return taskList;
+    }
+
+    public Task getUserTaskDetails(String taskId, String userId) {
+        LOGGER.debug("get the task details {} of the user : {}", taskId, userId);
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to get the details  of this task");
+            throw new UnAuthorizedException("You are not authorized to get the details  of this task");
+        }
+
+        Optional<TaskModel> taskModel = taskRepository.findById(taskId);
+        Task task  = null;
+        if(taskModel.isPresent()) {
+            task = TaskConverter.convertTaskModelToTaskDto(taskModel.get());
+        }
+        return task;
+    }
+
+    public void updateUserTask(Task task,  String taskId, String userId) {
+        LOGGER.debug("update the task {} ", taskId);
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to update this task");
+            throw new UnAuthorizedException("You are not authorized to update this task");
+        }
+        if(Objects.isNull(task)) {
+            LOGGER.error(TASK_BODY_MANDATORY);
+            throw new BadRequestException(TASK_BODY_MANDATORY);
+        }
+        Optional<TaskModel> taskModel = taskRepository.findById(taskId);
+        if(taskModel.isEmpty()) {
+                LOGGER.error(TASK_NOT_FOUND);
+                throw new NotFoundException(TASK_NOT_FOUND);
+        }
+        TaskModel taskModelFromDto = TaskConverter.convertTaskDtoToTaskModel(task);
+        taskModel.get().setDescription(taskModelFromDto.getDescription());
+        taskModel.get().setEndDate(taskModelFromDto.getEndDate());
+        taskModel.get().setStartDate(taskModelFromDto.getStartDate());
+        taskModel.get().setTitle(taskModelFromDto.getTitle());
+        taskRepository.save(taskModel.get());
+    }
+
+    public void deleteUserTask(String taskId, String userId) {
+        LOGGER.debug("Delete the task {} ", taskId);
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to delete this task");
+            throw new UnAuthorizedException("You are not authorized to delete this task");
+        }
+        Optional<TaskModel> taskDtoOptional = taskRepository.findById(taskId);
+        if(taskDtoOptional.isEmpty()) {
+            LOGGER.error(TASK_NOT_FOUND);
+            throw new NotFoundException(TASK_NOT_FOUND);
+        }
+
+        taskRepository.deleteById(taskId);
+    }
+
+    public void deleteAllUserTasks(String userId) {
+        LOGGER.debug("Delete all the tasks of the user : {} ", userId);
+
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to delete the tasks");
+            throw new UnAuthorizedException("You are not authorized to delete the tasks");
+        }
+
+        taskRepository.deleteByUserId(userId);
     }
 }

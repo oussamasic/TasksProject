@@ -19,15 +19,12 @@
 
 package com.management.task.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -38,7 +35,15 @@ public class Task implements Serializable {
 
     private String id;
     @NotNull(message = "Description cannot be null")
-    @Size(min = 10, max = 100)
+    @Length(min = 10, max = 500)
     private String description;
     private boolean complete;
+    private String userId;
+    private Date creationDate;
+    @NotNull(message = "Title cannot be null")
+    @Length(min = 5, max = 100)
+    private String title;
+    private Date startDate;
+    private Date endDate;
+
 }

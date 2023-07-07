@@ -28,6 +28,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Date;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -48,7 +50,8 @@ class TaskServiceTest {
 
     @Test
     void testCreateTask() {
-        Task task = new Task("id", "description", false);
+        Task task = new Task("id", "description", false, "userId",
+                new Date(),"taskTitle", new Date(), new Date());
         taskService.createTask(task);
         verify(taskRepository).save(ArgumentMatchers.refEq(TaskConverter.convertTaskDtoToTaskModel(task)));
     }

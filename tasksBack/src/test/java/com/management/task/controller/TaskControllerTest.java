@@ -59,14 +59,14 @@ class TaskControllerTest {
     }
 
     @Test
-    void when_getAll_ok_should_return_ok() {
+    void when_getAllTask_ok_should_return_ok() {
 
         List<Task> expectedResponse = new ArrayList<>();
         Mockito
             .when(taskService.getAll())
             .thenReturn(expectedResponse);
 
-        List<Task> responseDto = taskController.getAll();
+        List<Task> responseDto = taskController.getAllTasks(null);
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 
@@ -79,6 +79,12 @@ class TaskControllerTest {
     }
 
     @Test
+    void testInCompleteTaskById() {
+        taskController.inCompleteTask("taskId");
+        verify(taskService).inCompleteTask("taskId");
+    }
+
+    @Test
     void testUpdateTask() {
         Task task = new Task();
         task.setDescription("description");
@@ -87,14 +93,14 @@ class TaskControllerTest {
     }
 
     @Test
-    void when_getAllCompleteTasks_ok_should_return_ok() {
+    void when_getAll_CompletedTasks_ok_should_return_ok() {
 
         List<Task> expectedResponse = new ArrayList<>();
         Mockito
             .when(taskService.getAllCompleteTasks())
             .thenReturn(expectedResponse);
 
-        List<Task> responseDto = taskController.getAllCompleteTasks();
+        List<Task> responseDto = taskController.getAllTasks("complete");
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 
@@ -105,14 +111,20 @@ class TaskControllerTest {
     }
 
     @Test
-    void when_getAllInCompleteTasks_ok_should_return_ok() {
+    void testCompleteTaskById() {
+        taskController.completeTask("taskId");
+        verify(taskService).completeTask("taskId");
+    }
+
+    @Test
+    void when_getAll_InCompletedTasks_ok_should_return_ok() {
 
         List<Task> expectedResponse = new ArrayList<>();
         Mockito
             .when(taskService.getAllInCompleteTasks())
             .thenReturn(expectedResponse);
 
-        List<Task> responseDto = taskController.getAllInCompleteTasks();
+        List<Task> responseDto = taskController.getAllTasks("incomplete");
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 }

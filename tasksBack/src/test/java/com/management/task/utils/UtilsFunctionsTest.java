@@ -28,6 +28,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Date;
+
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -37,7 +39,8 @@ class UtilsFunctionsTest {
     @Test
     void checkDescriptionTestShouldBeOK() {
         // Given
-        Task task = new Task("id", "description", true);
+        Task task = new Task("id", "description", true, "userId",
+                new Date(),"taskTitle", new Date(), new Date());
         // Then
         assertThatCode(()->UtilsFunctions.checkDescription(task))
             .doesNotThrowAnyException();
@@ -47,7 +50,8 @@ class UtilsFunctionsTest {
     @Test
     void checkDescriptionTestShouldBeKO() {
         // Given
-        Task task = new Task("id", "de", true);
+        Task task = new Task("id", "de", true, "userId",
+                new Date(),"taskTitle", new Date(), new Date());
         // Then
         assertThatCode(()->UtilsFunctions.checkDescription(task))
             .isInstanceOf(BadRequestException.class);

@@ -29,3 +29,9 @@ kafka:
       name: topicUser
       group:
         id: userGroupId
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG

@@ -30,5 +30,8 @@ import java.util.List;
  *
  */
 public interface TaskRepository extends MongoRepository<TaskModel, String> {
-    public List<TaskModel> findByComplete(boolean complete);
+    List<TaskModel> findByComplete(boolean complete);
+    List<TaskModel> findByUserId(String userID);
+
+    void deleteByUserId(String userId);
 }

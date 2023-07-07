@@ -20,6 +20,7 @@
 package com.management.task.security;
 
 import com.management.task.converter.UserConverter;
+import com.management.task.dto.User;
 import com.management.task.exceptions.NotFoundException;
 import com.management.task.model.UserModel;
 import com.management.task.repository.UserRepository;
@@ -64,11 +65,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserModel userDetails = userRepository.findByEmail(userEmail)
                     .orElseThrow(()-> new NotFoundException("No User found"));
 
-            if (jwtService.isTokenValid(token, UserConverter
-                    .convertUserModelToUserDto(userDetails))) {
+            User userDto = UserConverter.convertUserModelToUserDto(userDetails);
+            userDto.setPassword(null);
+
+            if (jwtService.isTokenValid(token, userDto)) {
 
                 UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null,
+                        new UsernamePasswordAuthenticationToken(userDto, null,
                                 new ArrayList<>());
 
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

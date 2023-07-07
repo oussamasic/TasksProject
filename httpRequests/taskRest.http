@@ -1,3 +1,5 @@
+@task-id = 6393b95e94534d02156bed9b
+
 ### create a task
 POST http://localhost:8080/api/tasks
 accept: application/json
@@ -5,12 +7,15 @@ content-type: application/json
 
 {
     "description" :"tejhgjh",
-    "complete" : false
+    "complete" : false,
+    "title" : "new title",
+    "startDate" : "2028-07-06",
+    "endDate" : "2030-12-06"
 }
 
 
 ### get All tasks
-GET http://localhost:8080/api/tasks/allTasks
+GET http://localhost:8080/api/tasks
 
 ### get All Complete tasks
 GET http://localhost:8080/api/tasks/completeTasks
@@ -19,21 +24,25 @@ GET http://localhost:8080/api/tasks/completeTasks
 GET http://localhost:8080/api/tasks/incompleteTasks
 
 ### get task by id
-GET http://localhost:8080/api/tasks/6393b95eff94534d02156bed9b
+GET http://localhost:8080/api/tasks/{{task-id}}
 
 ### delete task by id
-DELETE  http://localhost:8080/api/tasks/6393c5648294ac24466b2a14
+DELETE  http://localhost:8080/api/tasks/{{task-id}}
 
 
 ### update a task
-PUT http://localhost:8080/api/tasks/6393b95e94534d02156bed9b
+PUT http://localhost:8080/api/tasks/{{task-id}}
 accept: application/json
 content-type: application/json
 
 {
-    "description" :"hello oussama "
+    "description" :"hello oussama ",
+     "complete" : false,
+     "title" : "new new title",
+     "startDate" : "2023-07-06",
+     "endDate" : "2025-12-06"
 }
 
 ### complete a task
-PUT http://localhost:8080/api/tasks/6393b8bd8f929c42369eb72a/complete
+PUT http://localhost:8080/api/tasks/{{task-id}}/complete
 
