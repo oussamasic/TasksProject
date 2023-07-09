@@ -75,6 +75,9 @@ public class UserController {
         if (userToken.startsWith("Bearer ")) {
             token = userToken.substring(7);
             userService.logout(token);
+        } else {
+            LOGGER.error("The token is not correct");
+            throw new BadRequestException("The token is not correct");
         }
     }
 
