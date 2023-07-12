@@ -115,7 +115,7 @@ class UserControllerTest {
     }
 
     @Test
-    void testCreateUserTask() {
+    void testCreateUserTask_ok_when_all_conditions_are_respected() {
         // Given
         Task task = new Task("id", "description", true, "userId",
                 new Date(),"taskTitle", new Date(), new Date());
