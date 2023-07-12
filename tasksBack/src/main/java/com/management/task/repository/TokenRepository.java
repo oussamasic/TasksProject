@@ -35,6 +35,6 @@ public interface TokenRepository extends MongoRepository<TokenModel, String> {
     Optional<TokenModel> findByUserRefIdAndJwtToken(String userRefId, String jwtToken);
     Optional<TokenModel> findByJwtToken(String jwtToken);
     List<TokenModel> findByUserRefId(String userRefId);
-    long deleteByUserRefId(String userRefId);
+    void deleteByUserRefId(String userRefId);
 
 }

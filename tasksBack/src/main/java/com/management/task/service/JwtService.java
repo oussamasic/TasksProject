@@ -121,8 +121,10 @@ public class JwtService {
     public void updateUserToken(String jwtToken, String userId) {
         LOGGER.debug("Update the user Token");
         if(Objects.isNull(jwtToken)) {
+            LOGGER.error("the user token should not be null");
             throw new BadRequestException("the user token should not be null");
         }
+
         TokenModel tokenModel = tokenRepository.
                 findByUserRefIdAndJwtToken(userId, jwtToken).orElseThrow(
                         ()-> new NotFoundException("No Token found with the given information"));
@@ -135,6 +137,7 @@ public class JwtService {
         LOGGER.debug("Delete the user Token");
         Optional<TokenModel> tokenModelOptional = tokenRepository.findById(id);
         if(tokenModelOptional.isEmpty()) {
+            LOGGER.error("No token found with this id : {} ", id);
             throw new NotFoundException("No token found with this id : "+ id);
         }
         tokenRepository.deleteById(id);
@@ -145,7 +148,7 @@ public class JwtService {
         return tokenRepository.findById(id).orElse(null);
     }
 
-    public List<TokenModel> getAllToken(){
+    public List<TokenModel> getAllTokens(){
         LOGGER.debug("get all the tokens from the database");
         return tokenRepository.findAll();
     }

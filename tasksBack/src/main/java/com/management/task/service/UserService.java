@@ -61,6 +61,7 @@ public class UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private static final String  REQUEST_BODY_MANDATORY = "The request body should not be null";
+
     private static final String  TASK_BODY_MANDATORY = "the Task should not be null";
 
     private static final String TASK_NOT_FOUND = "Task not found";
@@ -75,7 +76,7 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        LOGGER.info("creating user");
+        LOGGER.debug("creating user");
         if(Objects.isNull(user)) {
             LOGGER.warn(REQUEST_BODY_MANDATORY);
             throw new BadRequestException(REQUEST_BODY_MANDATORY);
@@ -90,6 +91,7 @@ public class UserService {
             LOGGER.error("user with the same email exists");
             throw new BadRequestException("user with the same email exists");
         }
+
         UserModel userModel = UserConverter.convertUserDtoToUserModel(user);
 
         if(Objects.isNull(userModel.getPassword()) ) {
