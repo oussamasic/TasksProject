@@ -20,6 +20,8 @@
 package com.management.task.repository;
 
 import com.management.task.model.TaskModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
@@ -31,7 +33,7 @@ import java.util.List;
  */
 public interface TaskRepository extends MongoRepository<TaskModel, String> {
     List<TaskModel> findByComplete(boolean complete);
+    Page<TaskModel> findByComplete(boolean complete, Pageable pageable);
     List<TaskModel> findByUserId(String userID);
-
     void deleteByUserId(String userId);
 }

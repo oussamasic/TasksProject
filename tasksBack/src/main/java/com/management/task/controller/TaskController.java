@@ -47,7 +47,7 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     public List<Task> getAllTasks(@RequestParam(required = false) String status) {
 
         List<Task> taskList = new ArrayList<>();
@@ -105,6 +105,30 @@ public class TaskController {
     public void createTask(final @Valid @RequestBody Task task) {
         LOGGER.debug("Create a Task");
         taskService.createTask(task);
+    }
+
+    @GetMapping()
+    public List<Task> getAllPaginatedTasks(@RequestParam(required = false) String status,
+                                           @RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) {
+
+        List<Task> taskList = new ArrayList<>();
+
+        if(Objects.isNull(status)) {
+            LOGGER.debug("Get All paginated Tasks");
+            taskList =  taskService.getAllPaginatedTasks(size, page);
+        }
+
+        else if(status.equals("complete")) {
+            LOGGER.debug("Get All paginated Complete Tasks");
+            taskList =  taskService.getAllPaginatedCompletedTasks(size, page);
+        }
+
+        else if(status.equals("incomplete")) {
+            LOGGER.debug("Get All paginated InComplete Tasks");
+            taskList = taskService.getAllPaginatedInCompletedTasks(size, page);
+        }
+
+        return taskList;
     }
 
 }
