@@ -28,6 +28,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -124,6 +126,30 @@ public class TaskService {
             throw new NotFoundException(TASK_NOT_FOUND);
         }
         taskRepository.deleteById(id);
+    }
+
+    public List<Task> getAllPaginatedTasks(int size, int page) {
+        LOGGER.debug("get all Paginated Task");
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findAll(pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
+                .toList();
+
+    }
+
+    public List<Task> getAllPaginatedCompletedTasks(int size, int page) {
+        LOGGER.debug("get all Paginated Completed Task");
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findByComplete(true, pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
+                .toList();
+
+    }
+
+    public List<Task> getAllPaginatedInCompletedTasks(int size, int page) {
+        LOGGER.debug("get all Paginated InCompleted Task");
+        Pageable pageable = PageRequest.of(page, size);
+        return taskRepository.findByComplete(false, pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
+                .toList();
+
     }
 
 }

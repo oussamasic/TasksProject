@@ -38,6 +38,8 @@ import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -262,5 +264,17 @@ public class UserService {
         }
 
         taskRepository.deleteByUserId(userId);
+    }
+
+    public List<User> getAllPaginatedUsers(int size, int page) {
+        LOGGER.debug("get All Paginated Users, page : {} and size {} ", page, size);
+        List<User> userList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(page, size);
+        userRepository.findAll(pageable).stream().forEach(userModel -> {
+            User user = UserConverter.convertUserModelToUserDto(userModel);
+            user.setPassword(null);
+            userList.add(user);
+                });
+        return userList;
     }
 }

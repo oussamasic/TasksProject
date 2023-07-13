@@ -118,5 +118,10 @@ public class UserController {
         userService.deleteAllUserTasks(userId);
     }
 
+    @GetMapping()
+    public List<User> getAllPaginatedUsers(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) {
+        LOGGER.debug("get All Paginated Users from page : {} with {} as size ", page, size);
+        return userService.getAllPaginatedUsers(size,page);
+    }
 
 }
