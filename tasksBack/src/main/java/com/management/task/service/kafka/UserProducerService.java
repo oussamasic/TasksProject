@@ -50,7 +50,7 @@ public class UserProducerService {
     }
 
     public void createUSer(User user) {
-        logger.info("user sent : {} ", user);
+        logger.debug("user sent : {} ", user);
         this.userKafkaTemplate.send(userTopicName, user);
     }
 }

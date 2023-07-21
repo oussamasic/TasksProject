@@ -34,3 +34,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### GMAIL SMTP PROPERTIES ###
+tasksBack/src/main/resources/application.properties

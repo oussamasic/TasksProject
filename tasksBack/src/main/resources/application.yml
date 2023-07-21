@@ -1,6 +1,6 @@
 spring:
   application:
-    name: manage tasks Application
+    name: manage user's tasks Application
   kafka:
     consumer:
       bootstrap-servers: localhost:9092

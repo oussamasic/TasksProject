@@ -44,7 +44,6 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
@@ -81,25 +80,25 @@ public class UserController {
         }
     }
 
-    @PostMapping("/{userId}/tasks")
+    @PostMapping(CommonConstants.USER_TASKS)
     public void createUserTask(@RequestBody Task task, @PathVariable("userId") String userId)
             throws BadRequestException, UnAuthorizedException {
         LOGGER.debug("Create a task for an user");
         userService.createUserTask(task,userId);
     }
-    @GetMapping("/{userId}/tasks")
+    @GetMapping(CommonConstants.USER_TASKS)
     public List<Task> getAllUserTasks(@PathVariable("userId") String userId) {
         LOGGER.debug("get all the user tasks");
         return userService.getAllUserTasks(userId);
     }
 
-    @GetMapping("/{userId}/tasks/{taskId}")
+    @GetMapping(CommonConstants.USER_TASK_DETAILS)
     public Task getUserTaskDetails(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
         LOGGER.debug("get a task details of an user");
         return userService.getUserTaskDetails(taskId, userId);
     }
 
-    @PutMapping("/{userId}/tasks/{taskId}")
+    @PutMapping(CommonConstants.USER_TASK_DETAILS)
     public void updateUserTask(@RequestBody Task task, @PathVariable("taskId") String taskId,
                                @PathVariable("userId") String userId) {
         LOGGER.debug("update the task");
@@ -107,12 +106,12 @@ public class UserController {
 
     }
 
-    @DeleteMapping("/{userId}/tasks/{taskId}")
+    @DeleteMapping(CommonConstants.USER_TASK_DETAILS)
     public void deleteUserTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
         LOGGER.debug("Delete the task");
         userService.deleteUserTask(taskId, userId);
     }
-    @DeleteMapping("/{userId}/tasks")
+    @DeleteMapping(CommonConstants.USER_TASKS)
     public void deleteAllUserTasks(@PathVariable("userId") String userId) {
         LOGGER.debug("Delete all the user tasks");
         userService.deleteAllUserTasks(userId);
