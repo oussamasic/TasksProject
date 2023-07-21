@@ -49,6 +49,22 @@
 ```
 you can change the details about the DataBase name and the user credentials by modifying the file `dev-deployment/docker/mongo/init-mongodb/01_initialize_database_user.js`
 - Install `Docker` on your machine.
+- Configure the **SMTP GMAIL Server** on your project repository by adding this section to your application.yml file :
+
+```
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: <Login User to SMTP server> (email Address)
+    password: <Login password to SMTP server>
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls: true
+```
+
 - Install `zookeeper` and `Kafka` by running the next command :
 ```sh
     $ ./dev-deployment/docker/kafka/install_kafka.sh

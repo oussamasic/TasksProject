@@ -19,9 +19,12 @@
 
 package com.management.task.service.kafka;
 
+import com.management.task.dto.EmailDetailsDto;
 import com.management.task.dto.User;
+import com.management.task.service.SendMailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,15 @@ public class UserConsumerService {
     private final Logger logger =
         LoggerFactory.getLogger(UserConsumerService.class);
 
+    private static final String CREATED_USE_WELCOME_MAIL = "Hello with us in OSZ plateforme";
+
+    @Autowired
+    private final SendMailService sendMailService;
+
+    public UserConsumerService(SendMailService sendMailService) {
+        this.sendMailService = sendMailService;
+    }
+
     @KafkaListener(topics = "${kafka.general.topic.name}", groupId = "${kafka.general.topic.group.id}")
     public void consume(String message) {
         logger.info("Message received ff: {}", message);
@@ -39,8 +51,11 @@ public class UserConsumerService {
     @KafkaListener(topics = "${kafka.user.topic.name}", groupId = "${kafka.user.topic.group.id}",
         containerFactory = "userKafkaListenerContainerFactory")
     public void consume(User user) {
-        logger.info("user email received : {}", user.getEmail());
-        logger.info("user firstName received : {}", user.getFirstName());
-        logger.info("user lastName received : {}", user.getLastName());
+        logger.debug("user email received : {}", user.getEmail());
+        logger.debug("user firstName, lastName received : {} {}",
+                user.getFirstName(), user.getLastName());
+        EmailDetailsDto emailDetailsDto = new EmailDetailsDto();
+        emailDetailsDto.setEmailSubject(CREATED_USE_WELCOME_MAIL);
+        sendMailService.sendSampleMail(emailDetailsDto, user);
     }
 }
