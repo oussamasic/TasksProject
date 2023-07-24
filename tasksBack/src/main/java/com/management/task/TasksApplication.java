@@ -46,7 +46,7 @@ public class TasksApplication implements CommandLineRunner {
 	public void run(String... args) {
 		final String applicationName = env.getProperty("spring.application.name") ;
 		LOGGER.info("User Tasks SpringBoot Application started:");
-		LOGGER.info("spring.application.name: {}", applicationName);
+		LOGGER.info("Spring Application Name: {}", applicationName);
 	}
 
 }

@@ -22,20 +22,20 @@ package com.management.task.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class BadRequestException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+public class InternalServerException extends RuntimeException {
 
     private static final long serialVersionUID = 1708664733842323966L;
 
-    public BadRequestException(final String message) {
+    public InternalServerException(final String message) {
         super(message);
     }
 
-    public BadRequestException(final String message, final Throwable e) {
-        super(message, e);
+    public InternalServerException(final String message, final Throwable exception) {
+        super(message, exception);
     }
 
-    public BadRequestException(final Throwable exception) {
+    public InternalServerException(final Throwable exception) {
         super(exception);
     }
 }

@@ -40,7 +40,6 @@ public class PasswordEncoder {
         final int workload = 14;
         String salt = BCrypt.gensalt(workload, new SecureRandom());
         return BCrypt.hashpw(passwordPlainText, salt);
-
     }
 
     public static boolean checkPassword(String passwordPlainText, String hashedPassword) {

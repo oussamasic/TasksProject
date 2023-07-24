@@ -38,4 +38,8 @@ public class NotFoundException extends RuntimeException {
     public NotFoundException(final String message, final Throwable e) {
         super(message, e);
     }
+
+    public NotFoundException(final Throwable exception) {
+        super(exception);
+    }
 }

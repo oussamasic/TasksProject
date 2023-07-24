@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api" +CommonConstants.TASKS)
 public class TaskController {
 

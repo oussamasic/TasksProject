@@ -17,25 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.management.task.exceptions;
+package com.management.task.dto;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class BadRequestException extends RuntimeException {
+import java.util.Date;
 
-    private static final long serialVersionUID = 1708664733842323966L;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class ErrorDto {
 
-    public BadRequestException(final String message) {
-        super(message);
-    }
+    private String error;
+    private int status;
+    private String message;
+    private Date timeStamp;
 
-    public BadRequestException(final String message, final Throwable e) {
-        super(message, e);
-    }
-
-    public BadRequestException(final Throwable exception) {
-        super(exception);
-    }
 }

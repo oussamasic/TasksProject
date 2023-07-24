@@ -28,6 +28,10 @@ import java.io.InputStreamReader;
 
 public class FileReader {
 
+    private FileReader() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static String readFromInputStream(InputStream inputStream)
             throws IOException {
         StringBuilder resultStringBuilder = new StringBuilder();
