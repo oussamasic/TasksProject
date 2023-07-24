@@ -39,4 +39,8 @@ public class ForbiddenException extends RuntimeException {
     public ForbiddenException(final String message, final Throwable e) {
         super(message, e);
     }
+
+    public ForbiddenException(final Throwable exception) {
+        super(exception);
+    }
 }
