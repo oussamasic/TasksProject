@@ -17,29 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginLgoutUserService } from './service/login-lgout-user.service';
+import { TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-})
-export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private loginLogoutUser: LoginLgoutUserService
-  ) {}
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { LoginLgoutUserApiService } from './login-lgout-user-api.service';
 
-  title = 'Management Tasks Application';
+describe('LoginLgoutUserApiService', () => {
+  let service: LoginLgoutUserApiService;
 
-  ngOnInit() {}
-
-  logoutUser() {
-    this.loginLogoutUser.logoutUser().subscribe(() => {
-      localStorage.removeItem('userConnected');
-      this.router.navigate(['login']);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
     });
-  }
-}
+    service = TestBed.inject(LoginLgoutUserApiService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

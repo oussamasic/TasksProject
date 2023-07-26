@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -26,9 +26,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoginUserComponent } from './component/login-user/login-user.component';
 import { TaskCreateComponent } from './component/task-create/task-create.component';
 import { TaskDetailsComponent } from './component/task-details/task-details.component';
 import { TasksListComponent } from './component/tasks-list/tasks-list.component';
+import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { LoginLgoutUserService } from './service/login-lgout-user.service';
 import { TaskService } from './service/task.service';
 
 @NgModule({
@@ -37,6 +40,7 @@ import { TaskService } from './service/task.service';
     TasksListComponent,
     TaskCreateComponent,
     TaskDetailsComponent,
+    LoginUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,15 @@ import { TaskService } from './service/task.service';
     HttpClientModule,
     BrowserAnimationsModule,
   ],
-  providers: [TaskService],
+  providers: [
+    TaskService,
+    LoginLgoutUserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

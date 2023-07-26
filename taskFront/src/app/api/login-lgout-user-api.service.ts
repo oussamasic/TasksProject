@@ -17,29 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginLgoutUserService } from './service/login-lgout-user.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '../model/user.interface';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+@Injectable({
+  providedIn: 'root',
 })
-export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private loginLogoutUser: LoginLgoutUserService
-  ) {}
+export class LoginLgoutUserApiService {
+  private baseUrl = '/api/users';
 
-  title = 'Management Tasks Application';
+  constructor(private http: HttpClient) {}
 
-  ngOnInit() {}
-
-  logoutUser() {
-    this.loginLogoutUser.logoutUser().subscribe(() => {
-      localStorage.removeItem('userConnected');
-      this.router.navigate(['login']);
+  public loginUser(user: User): Observable<string> {
+    return this.http.post(this.baseUrl + '/login', user, {
+      responseType: 'text',
     });
+  }
+
+  public logoutUser(): Observable<void> {
+    return this.http.post<void>(this.baseUrl + '/logout', {});
   }
 }
