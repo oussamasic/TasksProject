@@ -42,6 +42,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
       description: ['', [Validators.required, Validators.minLength(5)]],
     });
   }
+  
   ngOnDestroy(): void {
     this.subscriptions?.unsubscribe();
   }
@@ -63,6 +64,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
           },
           (error) => {
             this.submitted = false;
+            console.log('error : ', error)
           }
         )
       );

@@ -17,29 +17,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginLgoutUserService } from './service/login-lgout-user.service';
+import { TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-})
-export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private loginLogoutUser: LoginLgoutUserService
-  ) {}
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TokenInterceptorService } from './token-interceptor.service';
 
-  title = 'Management Tasks Application';
+describe('TokenInterceptorService', () => {
+  let service: TokenInterceptorService;
 
-  ngOnInit() {}
-
-  logoutUser() {
-    this.loginLogoutUser.logoutUser().subscribe(() => {
-      localStorage.removeItem('userConnected');
-      this.router.navigate(['login']);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
     });
-  }
-}
+    service = TestBed.inject(TokenInterceptorService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+});

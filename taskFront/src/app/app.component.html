@@ -3,7 +3,21 @@
     <h1>Welcome to My application!</h1>
   </div>
 
-  <button routerLink="/tasks" class="btn btn-info" data-toggle="modal">
+  <button
+    routerLink="/login"
+    class="btn btn-info"
+    style="margin-left: 10px"
+    data-toggle="modal"
+  >
+    Login to application
+  </button>
+
+  <button
+    routerLink="/tasks"
+    class="btn btn-info"
+    style="margin-left: 10px"
+    data-toggle="modal"
+  >
     List of tasks
   </button>
 
@@ -14,6 +28,15 @@
     data-toggle="modal"
   >
     Add new Task
+  </button>
+
+  <button
+    (click)="logoutUser()"
+    class="btn btn-danger"
+    style="margin-left: 10px"
+    data-toggle="modal"
+  >
+    Logout
   </button>
 
   <br />

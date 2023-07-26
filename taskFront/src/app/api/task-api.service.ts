@@ -17,7 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -32,7 +31,7 @@ export class TaskApiService {
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.baseUrl + '/allTasks');
+    return this.http.get<Task[]>(this.baseUrl + '/all');
   }
 
   public deleteTask(taskId: string): Observable<void> {

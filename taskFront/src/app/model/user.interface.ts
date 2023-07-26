@@ -17,29 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginLgoutUserService } from './service/login-lgout-user.service';
+import { UserStatus } from './userStatus.enum';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-})
-export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private loginLogoutUser: LoginLgoutUserService
-  ) {}
-
-  title = 'Management Tasks Application';
-
-  ngOnInit() {}
-
-  logoutUser() {
-    this.loginLogoutUser.logoutUser().subscribe(() => {
-      localStorage.removeItem('userConnected');
-      this.router.navigate(['login']);
-    });
-  }
+export interface User {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  authorized: boolean;
+  status: UserStatus;
+  password: string;
 }
