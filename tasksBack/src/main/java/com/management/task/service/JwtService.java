@@ -148,16 +148,16 @@ public class JwtService {
         return tokenRepository.findById(id).orElse(null);
     }
 
-    public List<TokenModel> getAllTokens(){
+    public List<TokenModel> getAllTokens() {
         LOGGER.debug("get all the tokens from the database");
         return tokenRepository.findAll();
     }
-    public List<TokenModel> getAllUserToken(String userRefId){
+    public List<TokenModel> getAllUserToken(String userRefId) {
         LOGGER.debug("get all the tokens of an user from the database");
         return tokenRepository.findByUserRefId(userRefId);
     }
 
-    public void deleteAllToken(){
+    public void deleteAllToken() {
         LOGGER.debug("delete all the tokens in the database");
         tokenRepository.deleteAll();
     }
