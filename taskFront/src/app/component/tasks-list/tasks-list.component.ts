@@ -84,7 +84,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
 
   getAllCompletedTasks() {
     this.subscription.add(
-      this.service.getAllCompletedTasks().subscribe(
+      this.service.getAllTasks('complete').subscribe(
         (data) => {
           this.tasks = data;
         },
@@ -96,7 +96,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
   }
   getAllIncomletedTaks() {
     this.subscription.add(
-      this.service.getAllInCompletedTasks().subscribe(
+      this.service.getAllTasks('incomplete').subscribe(
         (data) => {
           this.tasks = data;
         },

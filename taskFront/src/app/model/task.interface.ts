@@ -21,4 +21,9 @@ export interface Task {
   id: string;
   description: string;
   complete: boolean;
+  userId: string;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  creationDate: Date;
 }

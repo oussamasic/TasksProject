@@ -28,8 +28,8 @@ import { Task } from '../model/task.interface';
 export class TaskService {
   constructor(private taskApiService: TaskApiService) {}
 
-  getAllTasks(): Observable<Task[]> {
-    return this.taskApiService.getAll();
+  getAllTasks(status?: string): Observable<Task[]> {
+    return this.taskApiService.getAll(status);
   }
 
   deleteTask(id: string): Observable<void> {
@@ -46,13 +46,13 @@ export class TaskService {
     return this.taskApiService.inCompleteTask(id);
   }
 
-  getAllCompletedTasks(): Observable<Task[]> {
-    return this.taskApiService.getAllCompletedTasks();
-  }
+  // getAllCompletedTasks(status: string): Observable<Task[]> {
+  //   return this.taskApiService.getAll(status);
+  // }
 
-  getAllInCompletedTasks(): Observable<Task[]> {
-    return this.taskApiService.getAllInCompletedTasks();
-  }
+  // getAllInCompletedTasks(status: string): Observable<Task[]> {
+  //   return this.taskApiService.getAll(status);
+  // }
 
   getTaskById(id: string): Observable<Task> {
     return this.taskApiService.getTaskById(id);

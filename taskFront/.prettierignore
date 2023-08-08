@@ -3,8 +3,6 @@
 node_modules
 target
 
-# Ignore everything (to avoid formatting angular conf files...):
-/*
 
 # Except files in projects:
 !/projects

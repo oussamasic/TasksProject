@@ -62,26 +62,26 @@ describe('TaskService', () => {
     expect(taskApiServiceMock.getAll).toHaveBeenCalled();
   });
 
-  it('should call getAllCompletedTasks of TaskApiService', () => {
+  it('should call getAllTasks of TaskApiService when we search completed tasks', () => {
     // Given
-    spyOn(taskApiServiceMock, 'getAllCompletedTasks').and.callThrough();
+    spyOn(taskApiServiceMock, 'getAll').and.callThrough();
 
     // When
-    service.getAllCompletedTasks();
+    service.getAllTasks('complete');
 
     // Then
-    expect(taskApiServiceMock.getAllCompletedTasks).toHaveBeenCalled();
+    expect(taskApiServiceMock.getAll).toHaveBeenCalled();
   });
 
-  it('should call getAllInCompletedTasks of TaskApiService', () => {
+  it('should call getAllTasks of TaskApiService when we search incompleted tasks', () => {
     // Given
-    spyOn(taskApiServiceMock, 'getAllInCompletedTasks').and.callThrough();
+    spyOn(taskApiServiceMock, 'getAll').and.callThrough();
 
     // When
-    service.getAllInCompletedTasks();
+    service.getAllTasks('incomplete');
 
     // Then
-    expect(taskApiServiceMock.getAllInCompletedTasks).toHaveBeenCalled();
+    expect(taskApiServiceMock.getAll).toHaveBeenCalled();
   });
 
   it('should call inCompleteTask of TaskApiService', () => {
@@ -112,6 +112,11 @@ describe('TaskService', () => {
       id: 'id',
       description: 'description',
       complete: false,
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
     };
     spyOn(taskApiServiceMock, 'createTask').and.callThrough();
 

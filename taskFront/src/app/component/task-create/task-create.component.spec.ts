@@ -35,14 +35,29 @@ describe('TaskCreateComponent', () => {
       id: '6393b96594534d02156bed9c',
       description: 'test te stes',
       complete: true,
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
     },
     {
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
       id: '6393b96e94534d02156bed9d',
       description: 'test test',
       complete: false,
     },
     {
       id: '6393c5608294ac24466b2a13',
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
       description: 'test test',
       complete: false,
     },
@@ -51,20 +66,23 @@ describe('TaskCreateComponent', () => {
   const taskDetail: Task = {
     id: '6393c5608294ac24466b2a13',
     description: 'test test',
+    userId: 'userId',
+    title: 'taskTitle',
+    creationDate: new Date(),
+    startDate: new Date(),
+    endDate: new Date(),
     complete: false,
   };
 
   const taskServiceMock = {
     getAllTasks: () => of(tasks),
     createTask: () => of(),
-    getAllCompletedTasks: () =>
-      of(tasks.filter((task) => task.complete === true)),
+    getAllCompletedTasks: () => of(tasks.filter((task) => task.complete === true)),
     deleteTask: () => of(),
     getTaskById: () => of(taskDetail),
     inCompleteTask: () => of(),
     completeTask: () => of(),
-    getAllInCompletedTasks: () =>
-      of(tasks.filter((task) => task.complete === false)),
+    getAllInCompletedTasks: () => of(tasks.filter((task) => task.complete === false)),
   };
 
   beforeEach(async () => {
