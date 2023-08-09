@@ -36,7 +36,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder, private taskService: TaskService) {
     this.form = this.formBuilder.group({
       complete: false,
-      description: [null, [Validators.required, Validators.minLength(5)]],
+      description: [null, [Validators.required, Validators.minLength(10)]],
       title: [null, [Validators.required, Validators.minLength(5)]],
       startDate: [null],
       endDate: [null],

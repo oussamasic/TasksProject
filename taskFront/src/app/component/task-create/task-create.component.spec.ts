@@ -112,8 +112,11 @@ describe('TaskCreateComponent', () => {
 
   it('should have a valid form', () => {
     const expectedTask = {
-      description: 'test test',
+      description: 'test test test',
       complete: false,
+      title: 'taskTitle',
+      startDate: new Date(),
+      endDate: new Date(),
     };
     component.form.setValue(expectedTask);
     expect(component.form.valid).toBeTruthy();
@@ -123,6 +126,9 @@ describe('TaskCreateComponent', () => {
     const expectedTask = {
       description: 't',
       complete: false,
+      title: 'title',
+      startDate: new Date(),
+      endDate: new Date(),
     };
     component.form.setValue(expectedTask);
     expect(component.form.valid).toBeFalsy();
@@ -137,8 +143,11 @@ describe('TaskCreateComponent', () => {
   it('should call createTask of TaskService when form is valid', () => {
     // Given
     const expectedTask = {
-      description: 'test test',
+      description: 'test test test',
       complete: false,
+      title: 'taskTitle',
+      startDate: new Date(),
+      endDate: new Date(),
     };
     component.form.setValue(expectedTask);
     spyOn(taskServiceMock, 'createTask').and.callThrough();
@@ -155,6 +164,9 @@ describe('TaskCreateComponent', () => {
     const expectedTask = {
       description: 't',
       complete: false,
+      title: 'hello',
+      startDate: new Date(),
+      endDate: new Date(),
     };
     component.form.setValue(expectedTask);
     spyOn(taskServiceMock, 'createTask').and.callThrough();

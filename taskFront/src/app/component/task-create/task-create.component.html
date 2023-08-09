@@ -43,7 +43,7 @@
           [ngStyle]="{ 'margin-top': '5px' }"
         >
           <span *ngIf="form.get('description').errors.required">description is Required</span>
-          <span *ngIf="form.get('description').errors.minlength"> MinLength Error : 5 characters are required </span>
+          <span *ngIf="form.get('description').errors.minlength"> MinLength Error : 10 characters are required </span>
         </div>
 
         <div class="row">
