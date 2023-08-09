@@ -10,11 +10,20 @@
 
 <ng-template #taskFounded>
   <div class="row">
-    <div class="col-12">
+    <div class="col-6">
       <div class="read-only-field">
         <label>Identifier :</label>
         <div>
           {{ task?.id }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <div class="read-only-field">
+        <label>Title :</label>
+        <div>
+          {{ task?.title }}
         </div>
       </div>
     </div>
@@ -32,6 +41,35 @@
   </div>
 
   <div class="row">
+    <div class="col-4">
+      <div class="read-only-field">
+        <label>Creation Date :</label>
+        <div>
+          {{ task?.creationDate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="read-only-field">
+        <label>Start Date :</label>
+        <div>
+          {{ task?.startDate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4">
+      <div class="read-only-field">
+        <label>End Date :</label>
+        <div>
+          {{ task?.endDate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-12">
       <div class="read-only-field">
         <label>Status :</label>
@@ -39,6 +77,29 @@
           {{ getTasksStatus(task?.complete) }}
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-10">
+      <div class="read-only-field">
+        <label>User identifier :</label>
+        <div>
+          {{ task?.userId }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <button
+        mat-raised-button
+        matTooltip="show the user details"
+        class="btn btn-info"
+        style="margin-left: 5px"
+        (click)="showUserDetails(task?.userId)"
+      >
+        Complete task
+      </button>
     </div>
   </div>
 </ng-template>

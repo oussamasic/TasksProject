@@ -36,28 +36,41 @@ describe('TasksListComponent', () => {
       id: '6393b96594534d02156bed9c',
       description: 'test te stes',
       complete: true,
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
     },
     {
       id: '6393b96e94534d02156bed9d',
       description: 'test test',
       complete: false,
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
     },
     {
       id: '6393c5608294ac24466b2a13',
       description: 'test test',
       complete: false,
+      userId: 'userId',
+      title: 'taskTitle',
+      creationDate: new Date(),
+      startDate: new Date(),
+      endDate: new Date(),
     },
   ];
 
   const taskServiceMock = {
     getAllTasks: () => of(tasks),
-    getAllCompletedTasks: () =>
-      of(tasks.filter((task) => task.complete === true)),
+    getAllCompletedTasks: () => of(tasks.filter((task) => task.complete === true)),
     deleteTask: () => of(),
     inCompleteTask: () => of(),
     completeTask: () => of(),
-    getAllInCompletedTasks: () =>
-      of(tasks.filter((task) => task.complete === false)),
+    getAllInCompletedTasks: () => of(tasks.filter((task) => task.complete === false)),
   };
 
   beforeEach(async () => {
@@ -84,15 +97,15 @@ describe('TasksListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call getAllCompletedTasks of TaskService', () => {
+  it('should call getAllTasks of TaskService when we search all completed tasks', () => {
     // Given
-    spyOn(taskServiceMock, 'getAllCompletedTasks').and.callThrough();
+    spyOn(taskServiceMock, 'getAllTasks').and.callThrough();
 
     // When
     component.getAllCompletedTasks();
 
     // Then
-    expect(taskServiceMock.getAllCompletedTasks).toHaveBeenCalled();
+    expect(taskServiceMock.getAllTasks).toHaveBeenCalled();
   });
 
   it('should return completed', () => {
@@ -101,15 +114,15 @@ describe('TasksListComponent', () => {
     expect(response).toEqual('COMPLETED');
   });
 
-  it('should call getAllInCompletedTasks of TaskService', () => {
+  it('should call getAllTasks of TaskService when we search all incompleted tasks', () => {
     // Given
-    spyOn(taskServiceMock, 'getAllInCompletedTasks').and.callThrough();
+    spyOn(taskServiceMock, 'getAllTasks').and.callThrough();
 
     // When
     component.getAllIncomletedTaks();
 
     // Then
-    expect(taskServiceMock.getAllInCompletedTasks).toHaveBeenCalled();
+    expect(taskServiceMock.getAllTasks).toHaveBeenCalled();
   });
 
   it('should return in progress', () => {

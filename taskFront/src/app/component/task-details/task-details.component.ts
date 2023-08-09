@@ -32,10 +32,8 @@ export class TaskDetailsComponent implements OnInit {
   task: Task;
   taskId: string;
   taskFound = false;
-  constructor(
-    private route: ActivatedRoute,
-    private taskService: TaskService
-  ) {}
+
+  constructor(private route: ActivatedRoute, private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.route.params
@@ -59,5 +57,9 @@ export class TaskDetailsComponent implements OnInit {
 
   getTasksStatus(complete: boolean): string {
     return complete ? 'COMPLETED' : 'IN PROGRESS';
+  }
+
+  showUserDetails(userId: string) {
+    console.log('test :', userId);
   }
 }

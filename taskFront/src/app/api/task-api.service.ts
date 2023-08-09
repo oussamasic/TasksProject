@@ -30,8 +30,13 @@ export class TaskApiService {
 
   constructor(private http: HttpClient) {}
 
-  public getAll(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.baseUrl + '/all');
+  public getAll(status?: string): Observable<Task[]> {
+    //let url = this.http.get<Task[]>(this.baseUrl + '/all');
+    let url = this.baseUrl + '/all';
+    if (status) {
+      url = url.concat('?status=', status);
+    }
+    return this.http.get<Task[]>(url);
   }
 
   public deleteTask(taskId: string): Observable<void> {
@@ -47,10 +52,10 @@ export class TaskApiService {
   }
 
   public getAllCompletedTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.baseUrl + '/completeTasks');
+    return this.http.get<Task[]>(this.baseUrl + '/all?status=complete');
   }
   public getAllInCompletedTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.baseUrl + '/incompleteTasks');
+    return this.http.get<Task[]>(this.baseUrl + '/all?status=incomplete');
   }
 
   public createTask(task: Task): Observable<void> {

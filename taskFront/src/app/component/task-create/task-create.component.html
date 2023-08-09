@@ -12,6 +12,22 @@
     <p>Create a Task</p>
     <form [formGroup]="form" #saveperson (ngSubmit)="createTask()">
       <div class="form-group">
+        <!-- Title -->
+        <label for="name">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="title"
+          data-toggle="tooltip"
+          data-placement="right"
+          title="Saisir un titre"
+        />
+        <div class="alert alert-danger" *ngIf="form.get('title').touched && form.get('title').invalid" [ngStyle]="{ 'margin-top': '5px' }">
+          <span *ngIf="form.get('title').errors.required">title is Required</span>
+          <span *ngIf="form.get('title').errors.minlength"> MinLength Error : 5 characters are required </span>
+        </div>
+
+        <!-- Description -->
         <label for="name">Description</label>
         <input
           type="text"
@@ -23,23 +39,40 @@
         />
         <div
           class="alert alert-danger"
-          *ngIf="
-            form.get('description').touched && form.get('description').invalid
-          "
+          *ngIf="form.get('description').touched && form.get('description').invalid"
           [ngStyle]="{ 'margin-top': '5px' }"
         >
-          <span *ngIf="form.get('description').errors.required"
-            >description is Required</span
-          >
-          <span *ngIf="form.get('description').errors.minlength">
-            MinLength Error : 5 characters are required
-          </span>
+          <span *ngIf="form.get('description').errors.required">description is Required</span>
+          <span *ngIf="form.get('description').errors.minlength"> MinLength Error : 10 characters are required </span>
+        </div>
+
+        <div class="row">
+          <!-- StartDate -->
+          <div class="col-6">
+            <mat-form-field color="accent">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="pickerSatrDate" formControlName="startDate" />
+
+              <mat-datepicker-toggle matIconSuffix [for]="pickerSatrDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerSatrDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <!-- EndDate -->
+
+          <div class="col-6">
+            <mat-form-field color="accent">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="pickerendDate" formControlName="endDate" />
+
+              <mat-datepicker-toggle matIconSuffix [for]="pickerendDate"></mat-datepicker-toggle>
+              <mat-datepicker #pickerendDate></mat-datepicker>
+            </mat-form-field>
+          </div>
         </div>
       </div>
 
-      <button type="submit" [disabled]="form.invalid" class="btn btn-success">
-        Create Task
-      </button>
+      <button type="submit" [disabled]="form.invalid" class="btn btn-success">Create Task</button>
     </form>
   </div>
 </ng-template>
