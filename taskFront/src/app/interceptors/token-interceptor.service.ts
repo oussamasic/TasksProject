@@ -17,12 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { LoginLgoutUserService } from '../service/login-lgout-user.service';
@@ -33,10 +28,7 @@ import { LoginLgoutUserService } from '../service/login-lgout-user.service';
 export class TokenInterceptorService implements HttpInterceptor {
   constructor(private logoutUser: LoginLgoutUserService) {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     var userConnected = JSON.parse(localStorage.getItem('userConnected'));
     if (userConnected) {
       var token = userConnected.token;
@@ -52,6 +44,15 @@ export class TokenInterceptorService implements HttpInterceptor {
       catchError((err) => {
         if (err.status === 401) {
           this.logoutUser.logoutUser();
+        }
+        if (err.status === 403) {
+          console.log('error 403 message ', err.message);
+        }
+        if (err.status === 500) {
+          console.log('error 500 message ', err.message);
+        }
+        if (err.status === 404) {
+          console.log('error 404 message ', err.message);
         }
         const error = err.error.message || err.statusText;
         return throwError(error);
