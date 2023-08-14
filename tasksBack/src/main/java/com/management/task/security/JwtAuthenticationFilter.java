@@ -42,6 +42,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -90,6 +91,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             userDto.setPassword(null);
 
             if (jwtService.isTokenValid(token, userDto)) {
+                optionalTokenModel.get().setUpdatedDate(new Date());
+                tokenRepository.save(optionalTokenModel.get());
 
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDto, null,

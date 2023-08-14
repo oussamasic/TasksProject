@@ -39,7 +39,13 @@ export class TokenInterceptorService implements HttpInterceptor {
           },
         });
       }
+
+      localStorage.setItem(
+        'userConnected',
+        JSON.stringify({ token: userConnected.token, email: userConnected.email, updatedDate: new Date() })
+      );
     }
+
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status === 401) {

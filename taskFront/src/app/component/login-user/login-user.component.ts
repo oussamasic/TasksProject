@@ -33,11 +33,7 @@ export class LoginUserComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   private subscription: Subscription = new Subscription();
 
-  constructor(
-    private loginLogoutUserService: LoginLgoutUserService,
-    private formBuilder: FormBuilder,
-    private router: Router
-  ) {
+  constructor(private loginLogoutUserService: LoginLgoutUserService, private formBuilder: FormBuilder, private router: Router) {
     this.form = this.formBuilder.group({
       email: null,
       password: null,
@@ -56,10 +52,7 @@ export class LoginUserComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.loginLogoutUserService.loginUser(user).subscribe(
         (data) => {
-          localStorage.setItem(
-            'userConnected',
-            JSON.stringify({ token: data, email: user.email })
-          );
+          localStorage.setItem('userConnected', JSON.stringify({ token: data, email: user.email, updatedDate: new Date() }));
           this.router.navigate(['tasks']);
         },
         (error) => {
