@@ -68,9 +68,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.col-md-offset-1').textContent).toContain(
-      'Welcome to My application!'
-    );
+    expect(compiled.querySelector('.col-md-offset-1').textContent).toContain('Welcome to My application!');
   });
 
   it('should call logoutUser of LoginLgoutUserService', () => {

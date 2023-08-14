@@ -27,14 +27,20 @@ import { LoginLgoutUserService } from './service/login-lgout-user.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private loginLogoutUser: LoginLgoutUserService
-  ) {}
+  constructor(private router: Router, private loginLogoutUser: LoginLgoutUserService) {}
 
   title = 'Management Tasks Application';
 
-  ngOnInit() {}
+  ngOnInit() {
+    var userConnected = JSON.parse(localStorage.getItem('userConnected'));
+    if (userConnected) {
+      console.log('date ', userConnected.updatedDate);
+
+      if (new Date().getTime() - userConnected.updatedDate.getTime() > 60 * 60 * 1000) {
+        this.logoutUser();
+      }
+    }
+  }
 
   logoutUser() {
     this.loginLogoutUser.logoutUser().subscribe(() => {
