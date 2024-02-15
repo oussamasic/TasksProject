@@ -1,9 +1,9 @@
 ![](https://img.shields.io/badge/Java_17-yellow?style=for-the-badge)
-![](https://img.shields.io/badge/Angular_14-yellow?style=for-the-badge)
+![](https://img.shields.io/badge/Angular_15-yellow?style=for-the-badge)
 ![](https://img.shields.io/badge/Spring_boot_3-blueviolet?style=for-the-badge)
 ![](https://img.shields.io/badge/Spring_Security_6-blue?style=for-the-badge)
 
-![](https://img.shields.io/badge/MongoDB_4.4-red?style=for-the-badge)
+![](https://img.shields.io/badge/MongoDB_7.0.5-red?style=for-the-badge)
 ![](https://img.shields.io/badge/Docker-blue?style=for-the-badge)
 ![](https://img.shields.io/badge/Apache_Kafka-green?style=for-the-badge)
 ![](https://img.shields.io/badge/(JWT)_Json_web_token-greenyellow?style=for-the-badge)
@@ -28,7 +28,7 @@
 - Junit 5 and Mockito 5
 - Maven
 ## FRONTEND :
-- Angular 14
+- Angular 15
 - TypeScript
 - BootStrap
 - Karma
@@ -39,7 +39,7 @@
 - Intellij or Eclipse
 - VsCode
 - Java 17 or higher 
-- Angular 14 or higher
+- Angular 15 or higher
 
 # Steps to run the project
 - Install `MongoDB` on your machine, follow the next [steps](https://osz-technology.blogspot.com/2023/03/how-to-install-mongodb-on-ubuntu-2204.html)
@@ -91,13 +91,102 @@ spring:
 ```  
 - If everything installed properly, run the next command to start the application (FrontEnd) :
 ```sh
-    $ npm run start
+    $ npm run start:task
 ```
 you can go to this file **taskFront/package.json** to change the command to start the taskFront project.
 - If you want to run the unit tests you can use the following command :
 ```sh
-    $ npm run test 
+    $ npm run test:task 
 ```
 you can go to this file **taskFront/package.json** to change the command to test the taskFront project.
 - Open browser and go to http://localhost:4200
 - port 4200 is default, you can change with command --port to change the port.
+
+
+## IDE configuration
+
+### VSCode
+
+#### Recommended Extensions for VSCode
+
+- "ms-vscode.vscode-typescript-tslint-plugin" : for more information: // TsLinst, https://marketplace.visualstudio.com/items?itemName=ms-vscode.
+- "esbenp.prettier-vscode" : for more information: // Code formater Prettier, https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+- "sibiraj-s.vscode-scss-formatter" : for more information: // SCSS Formatter, https://marketplace.visualstudio.com/items?itemName=sibiraj-s.vscode-scss-formatter
+- "msjsdiag.debugger-for-chrome": for more information: // Debbuger for Chrome, https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+- "firefox-devtools.vscode-firefox-debug" : for more information: // Debbuger for Firefox, https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
+
+
+#### VSCode settings
+
+Bellow, an example to manage code format for Visual studio code using `settings.json` file:
+
+```json
+{
+  "editor.formatOnSave": true,
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.tslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+
+  "editor.snippetSuggestions": "top",
+  "editor.formatOnPaste": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "files.autoSave": "onFocusChange",
+  "prettier.singleQuote": true,
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "breadcrumbs.enabled": true,
+  "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
+  "typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
+  "[xml]": {
+    "editor.defaultFormatter": "fabianlauer.vs-code-xml-format"
+  },
+  "[yaml]": {
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    }
+  },
+  "[json]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+  "json.schemas": [],
+  "typescript.npm": "",
+  "[css]": {
+    "editor.defaultFormatter": "sibiraj-s.vscode-scss-formatter"
+  },
+  "editor.codeActionsOnSave": {},
+  "rest-client.defaultHeaders": {
+    "User-Agent": "vscode-restclient"
+  }
+}
+```
+
+To check that all your FrontEnd files are formatted :
+
+```sh
+    $ npm run prettier:check 
+```
+
+To format all your FrontEnd files you can run this command :
+
+```sh
+    $ npm run prettier:fix 
+```
