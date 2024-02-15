@@ -1,10 +1,9 @@
 @user-id = 649dc3c1f745b9562b6541e2
 @task-id = 64a71d1ceb024644ef23845a
-
 @jwt-token = 65ccbc8073a88f52cea10b15
 
 
-### create an user
+### create user
 POST http://localhost:8080/api/users
 accept: application/json
 content-type: application/json
