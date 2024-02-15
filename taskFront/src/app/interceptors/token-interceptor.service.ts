@@ -42,7 +42,7 @@ export class TokenInterceptorService implements HttpInterceptor {
 
       localStorage.setItem(
         'userConnected',
-        JSON.stringify({ token: userConnected.token, email: userConnected.email, updatedDate: new Date() })
+        JSON.stringify({ token: userConnected.token, email: userConnected.email, updatedDate: new Date() }),
       );
     }
 
@@ -62,7 +62,7 @@ export class TokenInterceptorService implements HttpInterceptor {
         }
         const error = err.error.message || err.statusText;
         return throwError(error);
-      })
+      }),
     );
   }
 }

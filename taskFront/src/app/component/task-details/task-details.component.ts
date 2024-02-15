@@ -33,7 +33,10 @@ export class TaskDetailsComponent implements OnInit {
   taskId: string;
   taskFound = false;
 
-  constructor(private route: ActivatedRoute, private taskService: TaskService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private taskService: TaskService,
+  ) {}
 
   ngOnInit(): void {
     this.route.params
@@ -41,7 +44,7 @@ export class TaskDetailsComponent implements OnInit {
         mergeMap((params) => {
           this.taskId = params.id;
           return this.taskService.getTaskById(params.id);
-        })
+        }),
       )
       .subscribe(
         (task) => {
@@ -51,7 +54,7 @@ export class TaskDetailsComponent implements OnInit {
         (error) => {
           this.taskFound = false;
           console.log('error', error);
-        }
+        },
       );
   }
 

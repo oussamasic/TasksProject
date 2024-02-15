@@ -30,9 +30,7 @@ describe('LoginUserComponent', () => {
   let component: LoginUserComponent;
   let fixture: ComponentFixture<LoginUserComponent>;
 
-  const routes: Routes = [
-    { path: 'tasks', redirectTo: 'home', pathMatch: 'full' },
-  ];
+  const routes: Routes = [{ path: 'tasks', redirectTo: 'home', pathMatch: 'full' }];
 
   const loginLgoutUserServiceMock = {
     loginUser: () => of('tokenUser'),
@@ -41,10 +39,7 @@ describe('LoginUserComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule.withRoutes(routes),
-      ],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes(routes)],
       declarations: [LoginUserComponent],
       providers: [
         FormBuilder,

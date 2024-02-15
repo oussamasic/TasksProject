@@ -52,8 +52,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.log('error :', error);
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -65,8 +65,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.log('error :', error);
-        }
-      )
+        },
+      ),
     );
   }
   completeTask(id: string): void {
@@ -77,8 +77,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.log('error :', error);
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -90,8 +90,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.log('error while getting tasks from Back server', error);
-        }
-      )
+        },
+      ),
     );
   }
   getAllIncomletedTaks() {
@@ -102,8 +102,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.log('error while getting tasks from Back server', error);
-        }
-      )
+        },
+      ),
     );
   }
 
@@ -115,8 +115,8 @@ export class TasksListComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.log('error while getting tasks from Back server', error);
-        }
-      )
+        },
+      ),
     );
   }
 }
