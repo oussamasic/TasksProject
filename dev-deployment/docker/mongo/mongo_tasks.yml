@@ -1,4 +1,4 @@
-version: '3.7'
+version: '7.0.5'
 
 services:
   mongo-dev:
@@ -14,7 +14,7 @@ services:
       - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
 
     # no --auth is needed here as presence of username and password add this option automatically
-    command: mongod --replSet "rs0" --port=27019
+    command: mongosh --replSet "rs0" --port=27019
 
   mongo-express-dev:
     container_name: task-mongo-express

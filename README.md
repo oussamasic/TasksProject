@@ -34,7 +34,7 @@
 - Karma
 - Jasmine
 ## DataBase :
-- MongoDB 4.4
+- MongoDB 7.0.5
 ## Prerequisites :
 - Intellij or Eclipse
 - VsCode
