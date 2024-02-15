@@ -33,7 +33,10 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   subscriptions: Subscription = new Subscription();
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder, private taskService: TaskService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private taskService: TaskService,
+  ) {
     this.form = this.formBuilder.group({
       complete: false,
       description: [null, [Validators.required, Validators.minLength(10)]],
@@ -43,11 +46,11 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscriptions?.unsubscribe();
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   newTask() {
     this.submitted = false;
@@ -65,8 +68,8 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
           (error) => {
             this.submitted = false;
             console.log('error : ', error);
-          }
-        )
+          },
+        ),
       );
     }
   }

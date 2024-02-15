@@ -27,7 +27,10 @@ import { LoginLgoutUserService } from './service/login-lgout-user.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router, private loginLogoutUser: LoginLgoutUserService) {}
+  constructor(
+    private router: Router,
+    private loginLogoutUser: LoginLgoutUserService,
+  ) {}
 
   title = 'Management Tasks Application';
 
