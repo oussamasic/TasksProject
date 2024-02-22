@@ -46,78 +46,78 @@ export class TasksListComponent implements OnInit, OnDestroy {
 
   deleteTask(id: string): void {
     this.subscription.add(
-      this.service.deleteTask(id).subscribe(
-        () => {
+      this.service.deleteTask(id).subscribe({
+        next: () => {
           this.getAllTasks();
         },
-        (error) => {
+        error: (error) => {
           console.log('error :', error);
         },
-      ),
+      }),
     );
   }
 
   inCompleteTask(id: string): void {
     this.subscription.add(
-      this.service.inCompleteTask(id).subscribe(
-        () => {
+      this.service.inCompleteTask(id).subscribe({
+        next: () => {
           this.getAllTasks();
         },
-        (error) => {
+        error: (error) => {
           console.log('error :', error);
         },
-      ),
+      }),
     );
   }
 
   completeTask(id: string): void {
     this.subscription.add(
-      this.service.completeTask(id).subscribe(
-        () => {
+      this.service.completeTask(id).subscribe({
+        next: () => {
           this.getAllTasks();
         },
-        (error) => {
+        error: (error) => {
           console.log('error :', error);
         },
-      ),
+      }),
     );
   }
 
   getAllCompletedTasks() {
     this.subscription.add(
-      this.service.getAllTasks('complete').subscribe(
-        (data) => {
+      this.service.getAllTasks('complete').subscribe({
+        next: (data) => {
           this.tasks = data;
         },
-        (error) => {
+        error: (error) => {
           console.log('error while getting tasks from Back server', error);
         },
-      ),
+      }),
     );
   }
   getAllIncomletedTaks() {
     this.subscription.add(
-      this.service.getAllTasks('incomplete').subscribe(
-        (data) => {
+      this.service.getAllTasks('incomplete').subscribe({
+        next: (data) => {
           this.tasks = data;
         },
-        (error) => {
+        error: (error) => {
           console.log('error while getting tasks from Back server', error);
         },
-      ),
+      }),
     );
   }
 
   getAllTasks(): void {
     this.subscription.add(
-      this.service.getAllTasks().subscribe(
-        (data) => {
+      this.service.getAllTasks().subscribe({
+        next: (data) => {
           this.tasks = data;
         },
-        (error) => {
+        error: (error) => {
           console.log('error while getting tasks from Back server', error);
         },
-      ),
+      }),
     );
   }
 }

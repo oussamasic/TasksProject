@@ -31,12 +31,14 @@ content-type: application/json
 
 ### logout user
 POST http://localhost:8080/api/users/logout/{{jwt-token}}
+Authorization: Bearer your-JWT-Token
 accept: application/json
 content-type: application/json
 
 
 ### create a task for the user
 POST http://localhost:8080/api/users/{{user-id}}/tasks
+Authorization: Bearer your-JWT-Token
 accept: application/json
 content-type: application/json
 
@@ -50,14 +52,17 @@ content-type: application/json
 
 ### get the details of the user task
 GET http://localhost:8080/api/users/{{user-id}}/tasks/{{task-id}}
+Authorization: Bearer your-JWT-Token
 
 
 ### get all the tasks of an user
 GET http://localhost:8080/api/users/{{user-id}}/tasks
+Authorization: Bearer your-JWT-Token
 
 
 ### update the user task
 PUT http://localhost:8080/api/users/{{user-id}}/tasks/{{task-id}}
+Authorization: Bearer your-JWT-Token
 accept: application/json
 content-type: application/json
 
@@ -72,10 +77,12 @@ content-type: application/json
 
 ### delete the user task
 http://localhost:8080/api/users/{{user-id}}/tasks/{{task-id}}
+Authorization: Bearer your-JWT-Token
 
 
 ### delete all the user tasks
 DELETE http://localhost:8080/api/users/{{user-id}}/tasks
+Authorization: Bearer your-JWT-Token
 
 ### download user tasks report
 GET http://localhost:8080/api/users/{{user-id}}/tasks/report
