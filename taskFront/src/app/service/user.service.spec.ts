@@ -20,19 +20,49 @@
 import { TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { of } from 'rxjs';
+import { UserApiService } from '../api/user-api.service';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
 
+  const userApiServiceMock = {
+    downloadUserTasksReportNormal: () => of(),
+    findUserByEmail: () => of({}),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
+      providers: [{ provide: UserApiService, useValue: userApiServiceMock }],
     });
     service = TestBed.inject(UserService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should call findUserByEmail of UserApiService', () => {
+    // Given
+    spyOn(userApiServiceMock, 'findUserByEmail').and.callThrough();
+
+    // When
+    service.findUserByEmail('email');
+
+    // Then
+    expect(userApiServiceMock.findUserByEmail).toHaveBeenCalled();
+  });
+
+  it('should call downloadUserTasksReportNormal of UserApiService', () => {
+    // Given
+    spyOn(userApiServiceMock, 'downloadUserTasksReportNormal').and.callThrough();
+
+    // When
+    service.downloadUserTasksReportNormal('email');
+
+    // Then
+    expect(userApiServiceMock.downloadUserTasksReportNormal).toHaveBeenCalled();
   });
 });
