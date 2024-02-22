@@ -46,16 +46,16 @@ export class TaskDetailsComponent implements OnInit {
           return this.taskService.getTaskById(params.id);
         }),
       )
-      .subscribe(
-        (task) => {
+      .subscribe({
+        next: (task) => {
           this.taskFound = true;
           this.task = task;
         },
-        (error) => {
+        error: (error) => {
           this.taskFound = false;
           console.log('error', error);
         },
-      );
+      });
   }
 
   getTasksStatus(complete: boolean): string {

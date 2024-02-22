@@ -60,16 +60,16 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       let taskDetails: Task = this.form.getRawValue();
       this.subscriptions.add(
-        this.taskService.createTask(taskDetails).subscribe(
-          () => {
+        this.taskService.createTask(taskDetails).subscribe({
+          next: () => {
             this.submitted = true;
             this.form.reset();
           },
-          (error) => {
+          error: (error) => {
             this.submitted = false;
             console.log('error : ', error);
           },
-        ),
+        }),
       );
     }
   }

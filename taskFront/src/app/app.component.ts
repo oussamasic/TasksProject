@@ -39,9 +39,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     var userConnected = JSON.parse(localStorage.getItem('userConnected'));
     if (userConnected) {
-      console.log('date ', userConnected.updatedDate);
-
-      if (new Date().getTime() - userConnected.updatedDate.getTime() > 60 * 60 * 1000) {
+      if (new Date().getTime() - new Date(userConnected.updatedDate).getTime() > 60 * 60 * 1000) {
         this.logoutUser();
       }
     }
