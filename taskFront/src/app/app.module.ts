@@ -37,6 +37,7 @@ import { TasksListComponent } from './component/tasks-list/tasks-list.component'
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { LoginLgoutUserService } from './service/login-lgout-user.service';
 import { TaskService } from './service/task.service';
+import { UserService } from './service/user.service';
 
 @NgModule({
   declarations: [AppComponent, TasksListComponent, TaskCreateComponent, TaskDetailsComponent, LoginUserComponent],
@@ -60,6 +61,7 @@ import { TaskService } from './service/task.service';
   providers: [
     TaskService,
     LoginLgoutUserService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

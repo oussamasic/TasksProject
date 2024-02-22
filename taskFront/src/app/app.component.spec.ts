@@ -23,6 +23,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { AppComponent } from './app.component';
 import { LoginLgoutUserService } from './service/login-lgout-user.service';
+import { UserService } from './service/user.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -33,6 +34,11 @@ describe('AppComponent', () => {
     logoutUser: () => of(),
   };
 
+  const userServiceMock = {
+    findUserByEmail: () => of({}),
+    downloadUserTasksReportNormal: () => of(),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, RouterTestingModule],
@@ -41,6 +47,10 @@ describe('AppComponent', () => {
         {
           provide: LoginLgoutUserService,
           useValue: loginLgoutUserServiceMock,
+        },
+        {
+          provide: UserService,
+          useValue: userServiceMock,
         },
       ],
     }).compileComponents();
