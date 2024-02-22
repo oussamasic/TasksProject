@@ -35,6 +35,7 @@ import { TaskCreateComponent } from './component/task-create/task-create.compone
 import { TaskDetailsComponent } from './component/task-details/task-details.component';
 import { TasksListComponent } from './component/tasks-list/tasks-list.component';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { LoggerService } from './service/logger.service';
 import { LoginLgoutUserService } from './service/login-lgout-user.service';
 import { TaskService } from './service/task.service';
 import { UserService } from './service/user.service';
@@ -62,6 +63,7 @@ import { UserService } from './service/user.service';
     TaskService,
     LoginLgoutUserService,
     UserService,
+    LoggerService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

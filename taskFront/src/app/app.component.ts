@@ -19,6 +19,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoggerService } from './service/logger.service';
 import { LoginLgoutUserService } from './service/login-lgout-user.service';
 import { UserService } from './service/user.service';
 
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private loginLogoutUser: LoginLgoutUserService,
     private userService: UserService,
+    private logger: LoggerService,
   ) {}
 
   title = 'Welcome to My OSZ application';
@@ -67,7 +69,7 @@ export class AppComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.log('error while getting user resport from Back server', error);
+          this.logger.error('error while getting user resport from Back server', error);
         },
       });
     }

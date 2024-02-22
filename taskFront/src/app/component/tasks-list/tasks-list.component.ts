@@ -20,6 +20,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Task } from 'src/app/model/task.interface';
+import { LoggerService } from 'src/app/service/logger.service';
 import { TaskService } from 'src/app/service/task.service';
 
 @Component({
@@ -30,7 +31,10 @@ import { TaskService } from 'src/app/service/task.service';
 export class TasksListComponent implements OnInit, OnDestroy {
   tasks: Task[];
   subscription: Subscription = new Subscription();
-  constructor(private service: TaskService) {}
+  constructor(
+    private service: TaskService,
+    private logger: LoggerService,
+  ) {}
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
@@ -51,7 +55,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
           this.getAllTasks();
         },
         error: (error) => {
-          console.log('error :', error);
+          this.logger.error('error :', error);
         },
       }),
     );
@@ -64,7 +68,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
           this.getAllTasks();
         },
         error: (error) => {
-          console.log('error :', error);
+          this.logger.error('error :', error);
         },
       }),
     );
@@ -77,7 +81,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
           this.getAllTasks();
         },
         error: (error) => {
-          console.log('error :', error);
+          this.logger.error('error :', error);
         },
       }),
     );
@@ -90,7 +94,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
           this.tasks = data;
         },
         error: (error) => {
-          console.log('error while getting tasks from Back server', error);
+          this.logger.error('error while getting tasks from Back server', error);
         },
       }),
     );
@@ -102,7 +106,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
           this.tasks = data;
         },
         error: (error) => {
-          console.log('error while getting tasks from Back server', error);
+          this.logger.error('error while getting tasks from Back server', error);
         },
       }),
     );
@@ -115,7 +119,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
           this.tasks = data;
         },
         error: (error) => {
-          console.log('error while getting tasks from Back server', error);
+          this.logger.error('error while getting tasks from Back server', error);
         },
       }),
     );

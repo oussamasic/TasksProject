@@ -22,6 +22,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/model/user.interface';
+import { LoggerService } from 'src/app/service/logger.service';
 import { LoginLgoutUserService } from 'src/app/service/login-lgout-user.service';
 
 @Component({
@@ -37,6 +38,7 @@ export class LoginUserComponent implements OnInit, OnDestroy {
     private loginLogoutUserService: LoginLgoutUserService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private logger: LoggerService,
   ) {
     this.form = this.formBuilder.group({
       email: null,
@@ -59,7 +61,7 @@ export class LoginUserComponent implements OnInit, OnDestroy {
         this.router.navigate(['tasks']);
       },
       error: (error) => {
-        console.log('the error is : ', error);
+        this.logger.error('the error is : ', error);
       },
     });
   }
