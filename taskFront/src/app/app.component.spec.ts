@@ -58,17 +58,17 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'Management Tasks Application'`, () => {
+  it(`should have as title 'Welcome to My OSZ application'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Management Tasks Application');
+    expect(app.title).toEqual('Welcome to My OSZ application');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.col-md-offset-1').textContent).toContain('Welcome to My application!');
+    expect(compiled.querySelector('.col-md-offset-1').textContent).toContain('Welcome to My OSZ application');
   });
 
   it('should call logoutUser of LoginLgoutUserService', () => {
