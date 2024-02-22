@@ -21,6 +21,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Task } from 'src/app/model/task.interface';
+import { LoggerService } from 'src/app/service/logger.service';
 import { TaskService } from 'src/app/service/task.service';
 
 @Component({
@@ -36,6 +37,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private taskService: TaskService,
+    private logger: LoggerService,
   ) {
     this.form = this.formBuilder.group({
       complete: false,
@@ -67,7 +69,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             this.submitted = false;
-            console.log('error : ', error);
+            this.logger.error('error : ', error);
           },
         }),
       );

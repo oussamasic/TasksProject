@@ -20,13 +20,17 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
+import { LoggerService } from '../service/logger.service';
 import { LoginLgoutUserService } from '../service/login-lgout-user.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TokenInterceptorService implements HttpInterceptor {
-  constructor(private logoutUser: LoginLgoutUserService) {}
+  constructor(
+    private logoutUser: LoginLgoutUserService,
+    private logger: LoggerService,
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     var userConnected = JSON.parse(localStorage.getItem('userConnected'));
@@ -52,13 +56,13 @@ export class TokenInterceptorService implements HttpInterceptor {
           this.logoutUser.logoutUser();
         }
         if (err.status === 403) {
-          console.log('error 403 message ', err.message);
+          this.logger.error('error 403 message ', err.message);
         }
         if (err.status === 500) {
-          console.log('error 500 message ', err.message);
+          this.logger.error('error 500 message ', err.message);
         }
         if (err.status === 404) {
-          console.log('error 404 message ', err.message);
+          this.logger.error('error 404 message ', err.message);
         }
         const error = err.error.message || err.statusText;
         return throwError(error);

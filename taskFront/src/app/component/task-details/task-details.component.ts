@@ -21,6 +21,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { mergeMap } from 'rxjs/operators';
 import { Task } from 'src/app/model/task.interface';
+import { LoggerService } from 'src/app/service/logger.service';
 import { TaskService } from 'src/app/service/task.service';
 
 @Component({
@@ -36,6 +37,7 @@ export class TaskDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private taskService: TaskService,
+    private logger: LoggerService,
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +55,7 @@ export class TaskDetailsComponent implements OnInit {
         },
         error: (error) => {
           this.taskFound = false;
-          console.log('error', error);
+          this.logger.error('error', error);
         },
       });
   }
@@ -63,6 +65,6 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   showUserDetails(userId: string) {
-    console.log('test :', userId);
+    this.logger.info('test :', userId);
   }
 }
