@@ -24,7 +24,9 @@ import com.management.task.dto.User;
 import com.management.task.exceptions.BadRequestException;
 import com.management.task.utils.FileReader;
 import jakarta.mail.BodyPart;
+import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
+import jakarta.mail.Part;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
@@ -65,7 +67,7 @@ public class SendMailService {
         try {
 
             mailMessage.setFrom(sender);
-            mailMessage.setRecipients(MimeMessage.RecipientType.TO, user.getEmail());
+            mailMessage.setRecipients(Message.RecipientType.TO, user.getEmail());
             mailMessage.setSubject(details.getEmailSubject());
 
             LOGGER.debug("read the mail template file");
@@ -114,7 +116,7 @@ public class SendMailService {
                 MimeBodyPart imagePart = new MimeBodyPart();
                 try {
                     imagePart.setHeader("Content-ID", "<" + contentId + ">");
-                    imagePart.setDisposition(MimeBodyPart.INLINE);
+                    imagePart.setDisposition(Part.INLINE);
                     String imageFilePath = inlineImages.get(contentId);
                     attachImageToMailBody(imagePart, imageFilePath);
                     multipart.addBodyPart(imagePart);

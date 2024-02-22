@@ -21,7 +21,9 @@ package com.management.task.service;
 
 import com.management.task.converter.TaskConverter;
 import com.management.task.dto.Task;
+import com.management.task.dto.User;
 import com.management.task.exceptions.NotFoundException;
+import com.management.task.exceptions.UnAuthorizedException;
 import com.management.task.model.TaskModel;
 import com.management.task.repository.TaskRepository;
 import lombok.Getter;
@@ -30,9 +32,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -59,6 +65,13 @@ public class TaskService {
 
     public void createTask(Task taskDto) {
         LOGGER.debug("create a task");
+        User authenticatedUser = getAuthenticatedUser();
+        if(Objects.isNull(authenticatedUser)) {
+            LOGGER.error("You are not authorized to download the reports");
+            throw new UnAuthorizedException("You are not authorized to download the reports");
+        }
+
+        taskDto.setUserId(authenticatedUser.getId());
         TaskModel taskModel = TaskConverter.convertTaskDtoToTaskModel(taskDto);
         taskRepository.save(taskModel);
     }
@@ -150,6 +163,14 @@ public class TaskService {
         return taskRepository.findByComplete(false, pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
 
+    }
+
+    public User getAuthenticatedUser() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken)) {
+            return (User) auth.getPrincipal();
+        }
+        throw new UnAuthorizedException("User is not connected");
     }
 
 }

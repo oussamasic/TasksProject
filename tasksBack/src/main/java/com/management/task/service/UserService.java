@@ -19,6 +19,17 @@
 
 package com.management.task.service;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.management.task.converter.TaskConverter;
 import com.management.task.converter.UserConverter;
 import com.management.task.dto.Task;
@@ -45,7 +56,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Getter
@@ -276,5 +292,132 @@ public class UserService {
             userList.add(user);
                 });
         return userList;
+    }
+
+    public ByteArrayOutputStream downloadUserTasksReportNormal(String userId) throws DocumentException {
+        LOGGER.debug("Download the task list of user with id : {}", userId);
+
+        User authenticatedUser = getAuthenticatedUser();
+        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+            LOGGER.error("You are not authorized to download the reports");
+            throw new UnAuthorizedException("You are not authorized to download the reports");
+        }
+
+        Document document = new Document();
+        ByteArrayOutputStream pdfReportByteArrayOutputStream = new ByteArrayOutputStream();
+
+        try {
+            PdfWriter.getInstance(document, pdfReportByteArrayOutputStream);
+            document.open();
+
+            Font titleFont = FontFactory.getFont(FontFactory.COURIER_BOLD, 18, BaseColor.BLACK);
+            Font font = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
+            Font userFont = FontFactory.getFont(FontFactory.COURIER_BOLD, 14, BaseColor.BLUE);
+
+            Chunk titleChunk = new Chunk("OSZ Developers: ", titleFont);
+
+            Chunk chunk = new Chunk("List of tasks created by the user : ", font);
+            Chunk chunk2 = new Chunk(authenticatedUser.getFirstName(), userFont);
+            Chunk spaceChunk = new Chunk(" ", userFont);
+            Chunk chunk3 = new Chunk(authenticatedUser.getLastName(), userFont);
+
+            document.add(new Paragraph(titleChunk));
+
+            document.add(chunk);
+            document.add(chunk2);
+            document.add(spaceChunk);
+            document.add(chunk3);
+
+
+
+            PdfPTable pdfTable = new PdfPTable(5);
+
+            //Create Header Cells
+            PdfPCell pdfHeaderCell1 = new PdfPCell(new Paragraph("Title"));
+            pdfHeaderCell1.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            pdfHeaderCell1.setBorderWidth(2);
+            pdfHeaderCell1.setMinimumHeight(22);
+            pdfHeaderCell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfHeaderCell1.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell pdfHeaderCell2 = new PdfPCell(new Paragraph("Description"));
+            pdfHeaderCell2.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            pdfHeaderCell2.setBorderWidth(2);
+            pdfHeaderCell2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfHeaderCell2.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell pdfHeaderCell3 = new PdfPCell(new Paragraph("Start Date"));
+            pdfHeaderCell3.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            pdfHeaderCell3.setBorderWidth(2);
+            pdfHeaderCell3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfHeaderCell3.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell pdfHeaderCell4 = new PdfPCell(new Paragraph("End Date"));
+            pdfHeaderCell4.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            pdfHeaderCell4.setBorderWidth(2);
+            pdfHeaderCell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfHeaderCell4.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            PdfPCell pdfHeaderCell5 = new PdfPCell(new Paragraph("Status"));
+            pdfHeaderCell5.setBackgroundColor(BaseColor.LIGHT_GRAY);
+            pdfHeaderCell5.setBorderWidth(2);
+            pdfHeaderCell5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            pdfHeaderCell5.setVerticalAlignment(Element.ALIGN_CENTER);
+
+            //Add header cells to table
+            pdfTable.addCell(pdfHeaderCell1);
+            pdfTable.addCell(pdfHeaderCell2);
+            pdfTable.addCell(pdfHeaderCell3);
+            pdfTable.addCell(pdfHeaderCell4);
+            pdfTable.addCell(pdfHeaderCell5);
+
+
+
+            List<TaskModel> taskModelList = taskRepository.findByUserId(userId);
+            if(!taskModelList.isEmpty()) {
+                taskModelList.forEach(taskModel -> {
+
+                    //Create cell
+                    PdfPCell titleCell = new PdfPCell(new Paragraph(taskModel.getTitle()));
+                    PdfPCell descriptionCell = new PdfPCell(new Paragraph(taskModel.getDescription()));
+                    PdfPCell startDateCell = new PdfPCell(new Paragraph(taskModel.getStartDate().toString()));
+                    PdfPCell endDateCell = new PdfPCell(new Paragraph(taskModel.getEndDate().toString()));
+                    PdfPCell statusCell = new PdfPCell(new Paragraph(taskModel.isComplete() ? "Completed" : "Not Completed"));
+
+                    //Add cell to table
+                    pdfTable.addCell(titleCell);
+                    pdfTable.addCell(descriptionCell);
+                    pdfTable.addCell(startDateCell);
+                    pdfTable.addCell(endDateCell);
+                    pdfTable.addCell(statusCell);
+                    });
+
+            }
+
+            document.add(pdfTable);
+        }
+        catch (DocumentException documentException) {
+            throw new DocumentException("error while creating pdf file :", documentException);
+        }
+        finally {
+            document.close();
+        }
+
+        return pdfReportByteArrayOutputStream;
+    }
+
+    public User findUserByEmail(String email) {
+        LOGGER.debug("Search user with email : {}", email);
+
+        UserModel userModel = getUserByEmail(email);
+
+        if(Objects.isNull(userModel)) {
+            LOGGER.error("There is no user found with this email");
+            throw new NotFoundException("There is no user found with this email");
+        }
+
+        User user = UserConverter.convertUserModelToUserDto(userModel);
+        user.setPassword(null);
+        return user;
     }
 }

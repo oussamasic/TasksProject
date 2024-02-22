@@ -19,6 +19,7 @@
 
 package com.management.task.controller;
 
+import com.itextpdf.text.DocumentException;
 import com.management.task.dto.Task;
 import com.management.task.dto.User;
 import com.management.task.exceptions.BadRequestException;
@@ -29,10 +30,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,7 +77,7 @@ public class UserController {
     @PostMapping(CommonConstants.LOGOUT)
     public void userLogout(@RequestHeader(value = "Authorization") final String userToken) {
         LOGGER.debug("logout User");
-        if(Objects.isNull(userToken)) {
+        if (Objects.isNull(userToken)) {
             LOGGER.error("The logout operation can't be done");
             throw new BadRequestException("The logout operation can't be done");
         }
@@ -81,10 +94,11 @@ public class UserController {
 
     @PostMapping(CommonConstants.USER_TASKS)
     public void createUserTask(@RequestBody Task task, @PathVariable("userId") String userId)
-            throws BadRequestException, UnAuthorizedException {
+        throws BadRequestException, UnAuthorizedException {
         LOGGER.debug("Create a task for an user");
-        userService.createUserTask(task,userId);
+        userService.createUserTask(task, userId);
     }
+
     @GetMapping(CommonConstants.USER_TASKS)
     public List<Task> getAllUserTasks(@PathVariable("userId") String userId) {
         LOGGER.debug("get all the user tasks");
@@ -99,7 +113,7 @@ public class UserController {
 
     @PutMapping(CommonConstants.USER_TASK_DETAILS)
     public void updateUserTask(@RequestBody Task task, @PathVariable("taskId") String taskId,
-                               @PathVariable("userId") String userId) {
+        @PathVariable("userId") String userId) {
         LOGGER.debug("update the task");
         userService.updateUserTask(task, taskId, userId);
 
@@ -110,6 +124,7 @@ public class UserController {
         LOGGER.debug("Delete the task");
         userService.deleteUserTask(taskId, userId);
     }
+
     @DeleteMapping(CommonConstants.USER_TASKS)
     public void deleteAllUserTasks(@PathVariable("userId") String userId) {
         LOGGER.debug("Delete all the user tasks");
@@ -117,9 +132,28 @@ public class UserController {
     }
 
     @GetMapping()
-    public List<User> getAllPaginatedUsers(@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "0") int page) {
+    public List<User> getAllPaginatedUsers(@RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "0") int page) {
         LOGGER.debug("get All Paginated Users from page : {} with {} as size ", page, size);
-        return userService.getAllPaginatedUsers(size,page);
+        return userService.getAllPaginatedUsers(size, page);
     }
 
+    @GetMapping(value = CommonConstants.USER_TASKS + "/report", produces = MediaType.APPLICATION_PDF_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<byte[]> downloadUserTasksReportNormal(@PathVariable("userId") String userId)
+        throws DocumentException {
+
+        LOGGER.debug("Download the task list of user with id : {}", userId);
+
+        ByteArrayOutputStream pdfStream =
+            userService.downloadUserTasksReportNormal(userId);
+
+        return new ResponseEntity<>(pdfStream.toByteArray(), HttpStatus.OK);
+    }
+
+    @GetMapping(params = "email")
+    public User findUserByEmail(@RequestParam final String email) {
+        LOGGER.debug("Find the user by the email : {}", email);
+        return userService.findUserByEmail(email);
+    }
 }

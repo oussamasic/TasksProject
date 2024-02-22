@@ -69,6 +69,7 @@ export class TasksListComponent implements OnInit, OnDestroy {
       ),
     );
   }
+
   completeTask(id: string): void {
     this.subscription.add(
       this.service.completeTask(id).subscribe(

@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="col-md-offset-1">
-    <h1>Welcome to My application!</h1>
+    <h1>Welcome to My OSZ application</h1>
   </div>
 
   <button routerLink="/login" class="btn btn-info" style="margin-left: 10px" data-toggle="modal">Login to application</button>
@@ -10,6 +10,12 @@
   <button routerLink="/addTask" class="btn btn-info" style="margin-left: 10px" data-toggle="modal">Add new Task</button>
 
   <button (click)="logoutUser()" class="btn btn-danger" style="margin-left: 10px" data-toggle="modal">Logout</button>
+
+  <button (click)="downloadUserTasksReport()" class="btn btn-danger" style="margin-left: 10px" data-toggle="modal">Download Report</button>
+
+  <button (click)="downloadUserTasksReportNormal()" class="btn btn-info" style="margin-left: 10px" data-toggle="modal">
+    Download normal report
+  </button>
 
   <br />
   <router-outlet></router-outlet>

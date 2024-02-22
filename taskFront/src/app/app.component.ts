@@ -20,6 +20,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginLgoutUserService } from './service/login-lgout-user.service';
+import { UserService } from './service/user.service';
 
 @Component({
   selector: 'app-root',
@@ -30,9 +31,10 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private loginLogoutUser: LoginLgoutUserService,
+    private userService: UserService,
   ) {}
 
-  title = 'Management Tasks Application';
+  title = 'Welcome to My OSZ application';
 
   ngOnInit() {
     var userConnected = JSON.parse(localStorage.getItem('userConnected'));
@@ -50,5 +52,26 @@ export class AppComponent implements OnInit {
       localStorage.removeItem('userConnected');
       this.router.navigate(['login']);
     });
+  }
+
+  downloadUserTasksReport() {
+    return this.userService.downloadUserTasksReport('65d32dc5c8b0fe438ead281c');
+  }
+
+  downloadUserTasksReportNormal() {
+    var userConnected = JSON.parse(localStorage.getItem('userConnected'));
+
+    if (userConnected) {
+      this.userService.findUserByEmail(userConnected.email).subscribe({
+        next: (response) => {
+          if (response) {
+            return this.userService.downloadUserTasksReportNormal(response.id);
+          }
+        },
+        error: (error) => {
+          console.log('error while getting user resport from Back server', error);
+        },
+      });
+    }
   }
 }

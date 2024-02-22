@@ -31,7 +31,7 @@ import { LoginLgoutUserService } from 'src/app/service/login-lgout-user.service'
 })
 export class LoginUserComponent implements OnInit, OnDestroy {
   public form: FormGroup;
-  private subscription: Subscription = new Subscription();
+  private loginSubscription: Subscription = new Subscription();
 
   constructor(
     private loginLogoutUserService: LoginLgoutUserService,
@@ -46,23 +46,21 @@ export class LoginUserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {}
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+  ngOnDestroy() {
+    this.loginSubscription.unsubscribe();
   }
 
   loginUser() {
     const user: User = this.form.getRawValue();
 
-    this.subscription.add(
-      this.loginLogoutUserService.loginUser(user).subscribe(
-        (data) => {
-          localStorage.setItem('userConnected', JSON.stringify({ token: data, email: user.email, updatedDate: new Date() }));
-          this.router.navigate(['tasks']);
-        },
-        (error) => {
-          console.log('the error is : ', error);
-        },
-      ),
-    );
+    this.loginSubscription = this.loginLogoutUserService.loginUser(user).subscribe({
+      next: (data) => {
+        localStorage.setItem('userConnected', JSON.stringify({ token: data, email: user.email, updatedDate: new Date() }));
+        this.router.navigate(['tasks']);
+      },
+      error: (error) => {
+        console.log('the error is : ', error);
+      },
+    });
   }
 }
