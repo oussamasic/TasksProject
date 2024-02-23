@@ -18,9 +18,9 @@
 # Technologies Used
 ## BACKEND :
 - JAVA 17
-- Spring Boot 3.1.0
+- Spring Boot 3.x.x
 - Spring Data
-- Spring Security 6.0.3
+- Spring Security 6.x.x
 - JWT (Json Web Token)
 - Apache KAFKA
 - Docker
