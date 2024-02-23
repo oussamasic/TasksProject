@@ -65,7 +65,7 @@ export class TokenInterceptorService implements HttpInterceptor {
           this.logger.error('error 404 message ', err.message);
         }
         const error = err.error.message || err.statusText;
-        return throwError(error);
+        return throwError(() => error);
       }),
     );
   }

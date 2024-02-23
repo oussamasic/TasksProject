@@ -34,7 +34,7 @@ public class BusinessApplication {
 
     @EventListener
     public void handleContextRefresh(ContextRefreshedEvent event) {
-        LOGGER.debug("Starting all scheduled operations");
+        LOGGER.info("Starting all scheduled operations");
 
         ApplicationContext applicationContext = event.getApplicationContext();
         JwtService jwtService = applicationContext.getBean(JwtService.class);

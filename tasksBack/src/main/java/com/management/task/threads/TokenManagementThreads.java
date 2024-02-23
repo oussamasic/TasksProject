@@ -47,7 +47,7 @@ public class TokenManagementThreads implements Runnable {
     public void run() {
         try {
             Thread.currentThread().setName(TokenManagementThreads.class.getName());
-            LOGGER.debug("deleting all expired tokens");
+            LOGGER.info("deleting all expired tokens");
             deleteExpiredToken();
         }
         catch (InternalServerException exception) {
@@ -62,12 +62,12 @@ public class TokenManagementThreads implements Runnable {
             List<CompletableFuture<Void>> completableFuturesList = new ArrayList<>();
             List<TokenModel> tokenList = jwtService.getAllTokens();
             if (tokenList.isEmpty()) {
-                LOGGER.debug("No Token Found in the DataBase");
+                LOGGER.info("No Token Found in the DataBase");
             }
             tokenList.forEach(token -> {
                 if(isTokenToDelete(token, 60)) {
                     CompletableFuture<Void> traceabilityCompletableFuture = CompletableFuture.runAsync(() -> {
-                            LOGGER.debug("deleting token with id : {} ", token.getId());
+                            LOGGER.info("deleting token with id : {} ", token.getId());
                             jwtService.deleteUserToken(token.getId());
                     }, executorService);
                     completableFuturesList.add(traceabilityCompletableFuture);
@@ -88,7 +88,7 @@ public class TokenManagementThreads implements Runnable {
             LOGGER.error("Error when executing threads");
             throw new InternalServerException("Error when executing threads: " + exception);
         } finally {
-            LOGGER.debug("shutting dow the executor");
+            LOGGER.info("shutting dow the executor");
             executorService.shutdown();
         }
 

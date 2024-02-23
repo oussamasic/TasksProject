@@ -45,31 +45,31 @@ public class RestApiExceptionHandler {
         ErrorDto errorDto = new ErrorDto();
 
         if(exception instanceof AccessDeniedException || exception instanceof ForbiddenException) {
-            LOGGER.debug("Handle Forbidden and AccessDenied request error");
+            LOGGER.info("Handle Forbidden and AccessDenied request error");
             status = HttpStatus.FORBIDDEN;
             errorDto.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
             errorDto.setStatus(HttpStatus.FORBIDDEN.value());
         }
         else if (exception instanceof BadRequestException) {
-            LOGGER.debug("Handle Bad request error");
+            LOGGER.info("Handle Bad request error");
             status = HttpStatus.BAD_REQUEST;
             errorDto.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
             errorDto.setStatus(HttpStatus.BAD_REQUEST.value());
         }
         else if (exception instanceof NotFoundException) {
-            LOGGER.debug("Handle Not found error");
+            LOGGER.info("Handle Not found error");
             status = HttpStatus.NOT_FOUND;
             errorDto.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
             errorDto.setStatus(HttpStatus.NOT_FOUND.value());
         }
         else if (exception instanceof InternalServerException) {
-            LOGGER.debug("Handle Internal Server Exception error");
+            LOGGER.info("Handle Internal Server Exception error");
             status = HttpStatus.UNAUTHORIZED;
             errorDto.setError(HttpStatus.UNAUTHORIZED.getReasonPhrase());
             errorDto.setStatus(HttpStatus.UNAUTHORIZED.value());
         }
         else if (exception instanceof UnAuthorizedException) {
-            LOGGER.debug("Handle Unauthorized request error");
+            LOGGER.info("Handle Unauthorized request error");
             errorDto.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
             errorDto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }

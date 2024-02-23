@@ -56,7 +56,7 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        LOGGER.debug("Extract useName fom a JWT Token");
+        LOGGER.info("Extract useName fom a JWT Token");
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -66,12 +66,12 @@ public class JwtService {
     }
 
     public String generateToken(UserModel userDetails) {
-        LOGGER.debug("Generate new JWT Token for the user with email : {}", userDetails.getEmail());
+        LOGGER.info("Generate new JWT Token for the user with email : {}", userDetails.getEmail());
         return generateToken(Map.of(), userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserModel userDetails) {
-        LOGGER.debug("Generate new JWT Token");
+        LOGGER.info("Generate new JWT Token");
         String tokenString = Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -96,7 +96,7 @@ public class JwtService {
     }
 
     private boolean isTokenExpired(String token) {
-        LOGGER.debug("Check JWT Token expiration option");
+        LOGGER.info("Check JWT Token expiration option");
         return extractExpiration(token).before(new Date());
     }
 
@@ -119,7 +119,7 @@ public class JwtService {
     }
 
     public void updateUserToken(String jwtToken, String userId) {
-        LOGGER.debug("Update the user Token");
+        LOGGER.info("Update the user Token");
         if(Objects.isNull(jwtToken)) {
             LOGGER.error("the user token should not be null");
             throw new BadRequestException("the user token should not be null");
@@ -134,7 +134,7 @@ public class JwtService {
     }
 
     public void deleteUserToken(String id) {
-        LOGGER.debug("Delete the user Token");
+        LOGGER.info("Delete the user Token");
         Optional<TokenModel> tokenModelOptional = tokenRepository.findById(id);
         if(tokenModelOptional.isEmpty()) {
             LOGGER.error("No token found with this id : {} ", id);
@@ -144,32 +144,32 @@ public class JwtService {
     }
 
     public TokenModel getTokenById(String id) {
-        LOGGER.debug("Get a Token by Id");
+        LOGGER.info("Get a Token by Id");
         return tokenRepository.findById(id).orElse(null);
     }
 
     public List<TokenModel> getAllTokens() {
-        LOGGER.debug("get all the tokens from the database");
+        LOGGER.info("get all the tokens from the database");
         return tokenRepository.findAll();
     }
     public List<TokenModel> getAllUserToken(String userRefId) {
-        LOGGER.debug("get all the tokens of an user from the database");
+        LOGGER.info("get all the tokens of an user from the database");
         return tokenRepository.findByUserRefId(userRefId);
     }
 
     public void deleteAllToken() {
-        LOGGER.debug("delete all the tokens in the database");
+        LOGGER.info("delete all the tokens in the database");
         tokenRepository.deleteAll();
     }
 
     public void deleteAllUserToken(String userRefId) {
-        LOGGER.debug("delete all the tokens of an user in the database");
+        LOGGER.info("delete all the tokens of an user in the database");
         tokenRepository.deleteByUserRefId(userRefId);
 
     }
 
     public void logout(String jwtToken) {
-        LOGGER.debug("Process : user logout");
+        LOGGER.info("Process : user logout");
 
         if(jwtToken == null) {
             LOGGER.error("invalid token");
