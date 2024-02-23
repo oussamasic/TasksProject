@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserProducerService {
 
-    private static final Logger logger =
+    private static final Logger LOGGER =
         LoggerFactory.getLogger(UserProducerService.class);
 
     @Value(value = "${kafka.general.topic.name}")
@@ -45,12 +45,12 @@ public class UserProducerService {
     private KafkaTemplate<String, User> userKafkaTemplate;
 
     public void sendMessage(String message) {
-        logger.info("Message sent : {} ", message);
+        LOGGER.info("Message sent : {} ", message);
         this.kafkaTemplate.send(topicName, message);
     }
 
     public void createUSer(User user) {
-        logger.debug("user sent : {} ", user);
+        LOGGER.info("user sent : {} ", user);
         this.userKafkaTemplate.send(userTopicName, user);
     }
 }

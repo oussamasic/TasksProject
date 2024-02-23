@@ -60,7 +60,7 @@ public class SendMailService {
 
     public void sendSampleMail(EmailDetailsDto details, User user) {
 
-        LOGGER.debug("send a sample mail without attachment file");
+        LOGGER.info("send a sample mail without attachment file");
         MimeMessage mailMessage = javaMailSender.createMimeMessage();
         String emailContent = "";
 
@@ -70,16 +70,16 @@ public class SendMailService {
             mailMessage.setRecipients(Message.RecipientType.TO, user.getEmail());
             mailMessage.setSubject(details.getEmailSubject());
 
-            LOGGER.debug("read the mail template file");
+            LOGGER.info("read the mail template file");
             emailContent = FileReader.loadFileContent("welcome-mail.html");
 
             emailContent = emailContent.replace("${firstName}", user.getFirstName());
             emailContent = emailContent.replace("${lastName}", user.getLastName().toUpperCase());
 
-            LOGGER.debug("This mail has 2 part, the BODY and the embedded image");
+            LOGGER.info("This mail has 2 part, the BODY and the embedded image");
             MimeMultipart multipart = new MimeMultipart("related");
 
-            LOGGER.debug("The mail html part");
+            LOGGER.info("The mail html part");
             BodyPart messageBodyPart = new MimeBodyPart();
 
             messageBodyPart.setContent(emailContent, "text/html");
@@ -111,7 +111,7 @@ public class SendMailService {
             inlineImages.put("discover-logo", Objects.requireNonNull(this.getClass().getClassLoader()
                     .getResource("templates/icons/discover-logo.png")).getPath());
 
-            LOGGER.debug("This mail has 2 part, the BODY and the embedded images");
+            LOGGER.info("This mail has 2 part, the BODY and the embedded images");
             inlineImages.keySet().forEach(contentId -> {
                 MimeBodyPart imagePart = new MimeBodyPart();
                 try {
@@ -138,7 +138,7 @@ public class SendMailService {
     }
 
     private void attachImageToMailBody(MimeBodyPart imagePart, String imageFilePath) {
-        LOGGER.debug("attach the image to the email body");
+        LOGGER.info("attach the image to the email body");
         try {
             imagePart.attachFile(imageFilePath);
         } catch (IOException | MessagingException ex) {

@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserConsumerService {
 
-    private final Logger logger =
+    private static final Logger LOGGER =
         LoggerFactory.getLogger(UserConsumerService.class);
 
     private static final String CREATED_USE_WELCOME_MAIL = "Hello with us in OSZ plateforme";
@@ -45,14 +45,14 @@ public class UserConsumerService {
 
     @KafkaListener(topics = "${kafka.general.topic.name}", groupId = "${kafka.general.topic.group.id}")
     public void consume(String message) {
-        logger.info("Message received ff: {}", message);
+        LOGGER.info("Message received ff: {}", message);
     }
 
     @KafkaListener(topics = "${kafka.user.topic.name}", groupId = "${kafka.user.topic.group.id}",
         containerFactory = "userKafkaListenerContainerFactory")
     public void consume(User user) {
-        logger.debug("user email received : {}", user.getEmail());
-        logger.debug("user firstName, lastName received : {} {}",
+        LOGGER.info("user email received : {}", user.getEmail());
+        LOGGER.info("user firstName, lastName received : {} {}",
                 user.getFirstName(), user.getLastName());
         EmailDetailsDto emailDetailsDto = new EmailDetailsDto();
         emailDetailsDto.setEmailSubject(CREATED_USE_WELCOME_MAIL);
