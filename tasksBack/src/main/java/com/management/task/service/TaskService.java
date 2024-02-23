@@ -104,7 +104,7 @@ public class TaskService {
     }
 
     public List<Task> getAllInCompleteTasks() {
-        LOGGER.info("get all incompleted tasks");
+        LOGGER.info("get all uncompleted tasks");
         return taskRepository.findByComplete(false).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
     }

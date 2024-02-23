@@ -172,16 +172,18 @@ public class JwtService {
         LOGGER.info("Process : user logout");
 
         if(jwtToken == null) {
-            LOGGER.error("invalid token");
-            throw new BadRequestException("invalid token");
+            LOGGER.error("The token is not valid, it should not be null");
+            throw new BadRequestException("The token is not valid, it should not be null");
         }
         final Optional<TokenModel> optToken = tokenRepository.findByJwtToken(jwtToken);
 
         if (optToken.isEmpty()) {
-            LOGGER.error("invalid request");
-            throw new BadRequestException("invalid request");
+            LOGGER.error("The request is not valid");
+            throw new BadRequestException("The request is not valid");
         }
+
         tokenRepository.deleteById(optToken.get().getId());
+
         SecurityContextHolder.clearContext();
     }
 

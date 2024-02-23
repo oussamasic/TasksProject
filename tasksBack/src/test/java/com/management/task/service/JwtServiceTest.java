@@ -31,8 +31,10 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.*;
 
@@ -57,23 +59,10 @@ class JwtServiceTest {
     @Test
     void testGetAllUserTokens() {
         String userId = "userId";
-        jwtService.getAllUserToken(userId);
+        List<TokenModel> tokenModelList = jwtService.getAllUserToken(userId);
         verify(tokenRepository).findByUserRefId(userId);
+        assertThat(tokenModelList).isEmpty();
     }
-
-/*
-
-    @Test
-    void testGetAllInCompleteTasks() {
-        taskService.getAllInCompleteTasks();
-        verify(taskRepository).findByComplete(false);
-    }
-
-    @Test
-    void testGetAllCompleteTasks() {
-        taskService.getAllCompleteTasks();
-        verify(taskRepository).findByComplete(true);
-    }*/
 
     @Test
     void testUpdateUserToken_ok_when_all_conditions_validated() {
@@ -128,8 +117,9 @@ class JwtServiceTest {
     @Test
     void testGetTokenById() {
         String tokenId = "tokenId";
-        jwtService.getTokenById(tokenId);
+        TokenModel tokenModel = jwtService.getTokenById(tokenId);
         verify(tokenRepository).findById(tokenId);
+        assertThat(tokenModel).isNull();
     }
 
     @Test

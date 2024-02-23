@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.management.task.kafkaConfig;
+package com.management.task.kafka.config;
 
 import com.management.task.dto.User;
 import org.apache.kafka.clients.producer.ProducerConfig;
