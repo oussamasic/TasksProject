@@ -53,11 +53,12 @@ import java.util.Objects;
 @RequestMapping("/api" + CommonConstants.USERS)
 public class UserController {
 
-    @Autowired
+
     private final UserService userService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }

@@ -52,17 +52,22 @@ public class SendMailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendMailService.class);
 
-    @Autowired
+
     private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")
     private String sender;
 
+    @Autowired
+    public SendMailService(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
     public void sendSampleMail(EmailDetailsDto details, User user) {
 
         LOGGER.info("send a sample mail without attachment file");
         MimeMessage mailMessage = javaMailSender.createMimeMessage();
-        String emailContent = "";
+        String emailContent;
 
         try {
 

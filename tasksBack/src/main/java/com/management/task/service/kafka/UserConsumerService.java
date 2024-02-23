@@ -34,18 +34,17 @@ public class UserConsumerService {
     private static final Logger LOGGER =
         LoggerFactory.getLogger(UserConsumerService.class);
 
-    private static final String CREATED_USE_WELCOME_MAIL = "Hello with us in OSZ plateforme";
+    private static final String CREATED_USE_WELCOME_MAIL = "Hello with us in OSZ platform";
 
+        private final SendMailService sendMailService;
     @Autowired
-    private final SendMailService sendMailService;
-
     public UserConsumerService(SendMailService sendMailService) {
         this.sendMailService = sendMailService;
     }
 
     @KafkaListener(topics = "${kafka.general.topic.name}", groupId = "${kafka.general.topic.group.id}")
     public void consume(String message) {
-        LOGGER.info("Message received ff: {}", message);
+        LOGGER.info("Message received : {}", message);
     }
 
     @KafkaListener(topics = "${kafka.user.topic.name}", groupId = "${kafka.user.topic.group.id}",
