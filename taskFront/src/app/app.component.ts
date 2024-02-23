@@ -48,9 +48,14 @@ export class AppComponent implements OnInit {
   }
 
   logoutUser() {
-    this.loginLogoutUser.logoutUser().subscribe(() => {
-      localStorage.removeItem('userConnected');
-      this.router.navigate(['login']);
+    localStorage.removeItem('userConnected');
+    this.loginLogoutUser.logoutUser().subscribe({
+      next: () => {
+        this.router.navigate(['login']);
+      },
+      error: () => {
+        this.router.navigate(['login']);
+      },
     });
   }
 
