@@ -43,11 +43,13 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests(authorizedHttpRequests -> authorizedHttpRequests
-                        .requestMatchers("/api/users/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
-                        .anyRequest()
-                        .authenticated())
+            .cors(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(authorizedHttpRequests -> authorizedHttpRequests
+                .requestMatchers("/api/users/login").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
+                .requestMatchers(HttpMethod.GET,"/api/users/tasks/web-flux-report").permitAll()
+                .anyRequest()
+                .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

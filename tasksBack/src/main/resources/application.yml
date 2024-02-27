@@ -16,6 +16,14 @@ spring:
     mongodb:
       database: manageTasksDB
       port: 27017
+  webflux:
+    multipart:
+      max-in-memory-size: 512KB
+      max-parts: 3
+      max-disk-usage-per-part: 1024KB
+      max-headers-size: 5KB
+
+
 
 kafka:
   bootstrapAddress: localhost:9092

@@ -294,11 +294,11 @@ public class UserService {
         return userList;
     }
 
-    public ByteArrayOutputStream downloadUserTasksReportNormal(String userId) throws DocumentException {
-        LOGGER.info("Download the task list of user with id : {}", userId);
+    public ByteArrayOutputStream downloadUserTasksReportNormal() throws DocumentException {
+        LOGGER.info("Download the task list of user");
 
         User authenticatedUser = getAuthenticatedUser();
-        if(!Objects.equals(authenticatedUser.getId(), userId)) {
+        if(Objects.isNull(authenticatedUser)) {
             LOGGER.error("You are not authorized to download the reports");
             throw new UnAuthorizedException("You are not authorized to download the reports");
         }
@@ -373,7 +373,7 @@ public class UserService {
 
 
 
-            List<TaskModel> taskModelList = taskRepository.findByUserId(userId);
+            List<TaskModel> taskModelList = taskRepository.findByUserId(authenticatedUser.getId());
             if(!taskModelList.isEmpty()) {
                 taskModelList.forEach(taskModel -> {
 
