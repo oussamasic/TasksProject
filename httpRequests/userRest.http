@@ -86,8 +86,13 @@ Authorization: Bearer your-JWT-Token
 
 ### download user tasks report
 GET http://localhost:8080/api/users/{{user-id}}/tasks/report
-Authorization: Bearer your-JWT-Token
+Authorization: Bearer 
 
 ### get user details by email
 GET http://localhost:8080/api/users?email=email@email.com
 Authorization: Bearer your-JWT-Token
+
+### download webFlux report
+GET http://localhost:8080/api/users/tasks/web-flux-report
+Accept: application/octet-stream
+Authorization: Bearer 

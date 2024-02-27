@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.interface';
@@ -40,5 +40,12 @@ export class UserApiService {
 
   findUserByEmail(userEmail: string): Observable<User> {
     return this.http.get<User>(this.baseUrl + '?email=' + userEmail);
+  }
+
+  downloadUserTasksWebFluxReport(): Observable<HttpResponse<Blob>> {
+    return this.http.get(this.baseUrl + '/tasks/web-flux-report', {
+      observe: 'response',
+      responseType: 'blob',
+    });
   }
 }

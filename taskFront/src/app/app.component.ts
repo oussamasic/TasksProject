@@ -59,10 +59,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  downloadUserTasksReport() {
-    return this.userService.downloadUserTasksReport('65d32dc5c8b0fe438ead281c');
-  }
-
   downloadUserTasksReportNormal() {
     var userConnected = JSON.parse(localStorage.getItem('userConnected'));
 
@@ -78,5 +74,9 @@ export class AppComponent implements OnInit {
         },
       });
     }
+  }
+
+  downloadUserTasksWebFluxReport() {
+    return this.userService.downloadUserTasksWebFluxReport();
   }
 }

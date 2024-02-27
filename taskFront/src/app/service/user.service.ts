@@ -17,6 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserApiService } from '../api/user-api.service';
@@ -36,7 +37,8 @@ export class UserService {
       URL.revokeObjectURL(url);
     }
 
-    location.href = url;
+    //location.href = url;
+    window.open(url);
   }
 
   downloadUserTasksReport(userId: string) {
@@ -57,5 +59,14 @@ export class UserService {
 
   findUserByEmail(userEmail: string): Observable<User> {
     return this.userApiService.findUserByEmail(userEmail);
+  }
+
+  downloadUserTasksWebFluxReport() {
+    this.userApiService.downloadUserTasksWebFluxReport().subscribe((data: HttpResponse<Blob>) => {
+      const blob = new Blob([data.body], { type: 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+
+      window.open(url);
+    });
   }
 }

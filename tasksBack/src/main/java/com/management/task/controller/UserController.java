@@ -29,6 +29,14 @@ import com.management.task.utils.CommonConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.core.io.buffer.DefaultDataBufferFactory;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +51,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -147,7 +161,7 @@ public class UserController {
         LOGGER.info("Download the task list of user with id : {}", userId);
 
         ByteArrayOutputStream pdfStream =
-            userService.downloadUserTasksReportNormal(userId);
+            userService.downloadUserTasksReportNormal();
 
         return new ResponseEntity<>(pdfStream.toByteArray(), HttpStatus.OK);
     }
@@ -156,5 +170,72 @@ public class UserController {
     public User findUserByEmail(@RequestParam final String email) {
         LOGGER.info("Find the user by the email : {}", email);
         return userService.findUserByEmail(email);
+    }
+
+/*    @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    public ResponseEntity<Mono<byte[]>>   downloadFile() throws IOException {
+
+            File file = new File("src/main/resources/report.pdf");
+            InputStream inputStream = new FileInputStream(file);
+            byte[] bytes = new byte[(int) file.length()];
+            inputStream.read(bytes);
+            inputStream.close();
+            //return ResponseEntity.ok().body(bytes);
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName())
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(Mono.just(bytes));
+
+
+    }*/
+
+    @GetMapping(value = CommonConstants.TASKS + "/web-flux-report",
+        produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Mono<byte[]>> downloadWebFluxReport()
+        throws DocumentException {
+
+        LOGGER.info("Download the task list of user");
+
+        ByteArrayOutputStream pdfStream =
+            userService.downloadUserTasksReportNormal();
+
+        return ResponseEntity.ok()
+            .cacheControl(CacheControl.noCache())
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report.pdf")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(Mono.just(pdfStream.toByteArray()));
+    }
+
+    public Flux<DataBuffer> load() {
+
+            final Resource resource = new ClassPathResource("report.pdf");
+
+            if (resource.exists() || resource.isReadable()) {
+                return DataBufferUtils.read(resource, new DefaultDataBufferFactory(), 4096);
+            } else {
+                throw new RuntimeException("Could not read the file!");
+            }
+
+    }
+
+    InputStreamResource convertDataBufferFileToInputStreamResponse(Flux<DataBuffer> dataBufferFlux) throws IOException {
+        PipedInputStream isPipe;
+        try {
+            PipedOutputStream osPipe = new PipedOutputStream();
+            isPipe = new PipedInputStream(osPipe);
+            DataBufferUtils.write(dataBufferFlux, osPipe)
+                .subscribeOn(Schedulers.boundedElastic())
+                .doOnComplete(() -> {
+                    try {
+                        osPipe.close();
+                    } catch (IOException ignored) {
+                    }
+                }).subscribe(DataBufferUtils.releaseConsumer());
+        } catch (IOException ioException) {
+            LOGGER.error("Error loading stream {} ", ioException.getMessage());
+            throw new IOException("Error loading stream {} ", ioException);
+        }
+        return new InputStreamResource(isPipe);
     }
 }
