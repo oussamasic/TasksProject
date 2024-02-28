@@ -2,6 +2,9 @@
 
 //@import "~bootstrap/dist/css/bootstrap.css";
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '@angular/material/theming';
+
 html,
 body {
   height: 100%;
