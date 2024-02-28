@@ -30,7 +30,7 @@ import { TaskService } from 'src/app/service/task.service';
   styleUrls: ['./task-create.component.scss'],
 })
 export class TaskCreateComponent implements OnInit, OnDestroy {
-  public form: FormGroup;
+  public taskForm: FormGroup;
   subscriptions: Subscription = new Subscription();
   submitted = false;
 
@@ -39,12 +39,12 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     private logger: LoggerService,
   ) {
-    this.form = this.formBuilder.group({
+    this.taskForm = this.formBuilder.group({
       complete: false,
       description: [null, [Validators.required, Validators.minLength(10)]],
       title: [null, [Validators.required, Validators.minLength(5)]],
-      startDate: [null],
-      endDate: [null],
+      startDate: [null, Validators.required],
+      endDate: [null, Validators.required],
     });
   }
 
@@ -59,13 +59,13 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   }
 
   createTask() {
-    if (this.form.valid) {
-      let taskDetails: Task = this.form.getRawValue();
+    if (this.taskForm.valid) {
+      let taskDetails: Task = this.taskForm.getRawValue();
       this.subscriptions.add(
         this.taskService.createTask(taskDetails).subscribe({
           next: () => {
             this.submitted = true;
-            this.form.reset();
+            this.taskForm.reset();
           },
           error: (error) => {
             this.submitted = false;

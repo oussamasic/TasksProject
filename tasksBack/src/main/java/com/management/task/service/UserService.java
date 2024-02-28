@@ -418,6 +418,7 @@ public class UserService {
 
         User user = UserConverter.convertUserModelToUserDto(userModel);
         user.setPassword(null);
+
         return user;
     }
 }
