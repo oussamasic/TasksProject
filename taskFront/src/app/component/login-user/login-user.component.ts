@@ -18,7 +18,7 @@
  */
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { User } from 'src/app/model/user.interface';
@@ -31,7 +31,7 @@ import { LoginLgoutUserService } from 'src/app/service/login-lgout-user.service'
   styleUrls: ['./login-user.component.scss'],
 })
 export class LoginUserComponent implements OnInit, OnDestroy {
-  public form: FormGroup;
+  public loginForm: FormGroup;
   private loginSubscription: Subscription = new Subscription();
 
   constructor(
@@ -40,9 +40,9 @@ export class LoginUserComponent implements OnInit, OnDestroy {
     private router: Router,
     private logger: LoggerService,
   ) {
-    this.form = this.formBuilder.group({
-      email: null,
-      password: null,
+    this.loginForm = this.formBuilder.group({
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, Validators.required],
     });
   }
 
@@ -53,7 +53,7 @@ export class LoginUserComponent implements OnInit, OnDestroy {
   }
 
   loginUser() {
-    const user: User = this.form.getRawValue();
+    const user: User = this.loginForm.getRawValue();
 
     this.loginSubscription = this.loginLogoutUserService.loginUser(user).subscribe({
       next: (data) => {

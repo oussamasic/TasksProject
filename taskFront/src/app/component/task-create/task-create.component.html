@@ -9,70 +9,94 @@
 
 <ng-template #createMode>
   <div>
-    <p>Create a Task</p>
-    <form [formGroup]="form" #saveperson (ngSubmit)="createTask()">
+    <br />
+    <p [ngStyle]="{ 'text-align': 'center' }">Create Task for user</p>
+    <form [formGroup]="taskForm" #saveperson (ngSubmit)="createTask()">
       <div class="form-group">
-        <!-- Title -->
-        <label for="name">Title</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="title"
-          data-toggle="tooltip"
-          data-placement="right"
-          title="Saisir un titre"
-        />
-        <div class="alert alert-danger" *ngIf="form.get('title').touched && form.get('title').invalid" [ngStyle]="{ 'margin-top': '5px' }">
-          <span *ngIf="form.get('title').errors.required">title is Required</span>
-          <span *ngIf="form.get('title').errors.minlength"> MinLength Error : 5 characters are required </span>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-11">
+            <!-- Title -->
+            <label for="name">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="title"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="Saisir un titre"
+            />
+            <div
+              class="alert alert-danger"
+              *ngIf="taskForm.get('title').touched && taskForm.get('title').invalid"
+              [ngStyle]="{ 'margin-top': '5px' }"
+            >
+              <span *ngIf="taskForm.get('title').errors.required">Le titre est obligatoire</span>
+              <span *ngIf="taskForm.get('title').errors.minlength"> Il faut au moins 10 caractères comme titre </span>
+            </div>
+          </div>
+          <div class="col"></div>
+        </div>
+        <br />
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-11">
+            <!-- Description -->
+            <label for="name">Description</label>
+
+            <textarea
+              rows="8"
+              type="text"
+              class="form-control"
+              formControlName="description"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="Saisir une description"
+            >
+            </textarea>
+            <div
+              class="alert alert-danger"
+              *ngIf="taskForm.get('description').touched && taskForm.get('description').invalid"
+              [ngStyle]="{ 'margin-top': '5px' }"
+            >
+              <span *ngIf="taskForm.get('description').errors.required">La description est obligatoire</span>
+              <span *ngIf="taskForm.get('description').errors.minlength"> Il faut au moins 10 caractères comme description </span>
+            </div>
+          </div>
+          <div class="col"></div>
         </div>
 
-        <!-- Description -->
-        <label for="name">Description</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="description"
-          data-toggle="tooltip"
-          data-placement="right"
-          title="Saisir une description"
-        />
-        <div
-          class="alert alert-danger"
-          *ngIf="form.get('description').touched && form.get('description').invalid"
-          [ngStyle]="{ 'margin-top': '5px' }"
-        >
-          <span *ngIf="form.get('description').errors.required">description is Required</span>
-          <span *ngIf="form.get('description').errors.minlength"> MinLength Error : 10 characters are required </span>
-        </div>
+        <br />
 
         <div class="row">
+          <div class="col"></div>
           <!-- StartDate -->
-          <div class="col-6">
+          <div class="col-5">
             <mat-form-field color="accent">
-              <mat-label>Start Date</mat-label>
-              <input matInput [matDatepicker]="pickerSatrDate" formControlName="startDate" />
+              <mat-label>Date de début</mat-label>
+              <input matInput [matDatepicker]="pickerSatrDate" formControlName="startDate" [max]="taskForm.get('endDate').value" />
 
               <mat-datepicker-toggle matIconSuffix [for]="pickerSatrDate"></mat-datepicker-toggle>
               <mat-datepicker #pickerSatrDate></mat-datepicker>
             </mat-form-field>
           </div>
-
+          <div class="col"></div>
           <!-- EndDate -->
 
-          <div class="col-6">
+          <div class="col-5">
             <mat-form-field color="accent">
-              <mat-label>End Date</mat-label>
-              <input matInput [matDatepicker]="pickerendDate" formControlName="endDate" />
+              <mat-label>Date de fin</mat-label>
+              <input matInput [matDatepicker]="pickerendDate" formControlName="endDate" [min]="taskForm.get('startDate').value" />
 
               <mat-datepicker-toggle matIconSuffix [for]="pickerendDate"></mat-datepicker-toggle>
               <mat-datepicker #pickerendDate></mat-datepicker>
             </mat-form-field>
           </div>
+          <div class="col"></div>
         </div>
       </div>
-
-      <button type="submit" [disabled]="form.invalid" class="btn btn-success">Create Task</button>
+      <br />
+      <button type="submit" [disabled]="taskForm.invalid" class="btn btn-success">Create Task</button>
     </form>
   </div>
 </ng-template>

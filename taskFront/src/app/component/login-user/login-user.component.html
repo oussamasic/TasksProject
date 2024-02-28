@@ -1,11 +1,49 @@
-<form [formGroup]="form" #saveperson (ngSubmit)="loginUser()">
-  <div class="form-group">
-    <label for="name">Email Address </label>
-    <input type="text" class="form-control" formControlName="email" data-toggle="tooltip" data-placement="right" />
+<br />
+<br />
 
-    <label for="name">Password</label>
-    <input type="password" class="form-control" formControlName="password" data-toggle="tooltip" data-placement="right" />
+<form [formGroup]="loginForm" #saveperson (ngSubmit)="loginUser()">
+  <div class="form-group">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-5" [ngStyle]="{ 'text-align': 'center' }"><span>Adresse mail </span></div>
+      <div class="col"></div>
+      <div class="col-5" [ngStyle]="{ 'text-align': 'center' }"><span>Mot de passe </span></div>
+      <div class="col"></div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-5">
+        <input type="text" class="form-control" formControlName="email" data-toggle="tooltip" data-placement="right" />
+        <div
+          class="alert alert-warning"
+          *ngIf="loginForm.get('email').touched && loginForm.get('email').invalid"
+          [ngStyle]="{ 'margin-top': '5px' }"
+        >
+          <span *ngIf="loginForm.get('email').errors.required">L'email est obligatoire</span>
+          <span *ngIf="loginForm.get('email').errors.email"> Le format de l'email est incorrect </span>
+        </div>
+      </div>
+      <div class="col"></div>
+      <div class="col-5">
+        <input type="password" class="form-control" formControlName="password" data-toggle="tooltip" data-placement="right" />
+        <div
+          class="alert alert-warning"
+          *ngIf="loginForm.get('password').touched && loginForm.get('password').invalid"
+          [ngStyle]="{ 'margin-top': '5px' }"
+        >
+          <span *ngIf="loginForm.get('password').errors.required">Le mot de passe est obligatoire</span>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
   </div>
 
-  <button type="submit" [disabled]="form.invalid" class="btn btn-success">Login User</button>
+  <br />
+  <br />
+  <div class="row">
+    <div class="col" [ngStyle]="{ 'text-align': 'center' }">
+      <button type="submit" [disabled]="loginForm.invalid" class="btn btn-success center">Login User</button>
+    </div>
+  </div>
 </form>
