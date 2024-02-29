@@ -1,0 +1,43 @@
+<!--
+  ~ /*
+  ~  <OZ TASKS>
+  ~ <project to manage user tasks>
+  ~ Copyright (C) <2023>  <ZEROUALI Oussama>
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  ~  */
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail : prise de contact</title>
+</head>
+<body>
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2 style="color: #333333;">Contact e-mail</h2>
+    <p style="color: #555555;">${mailBody}</p>
+
+    <br/>
+
+    <h2 style="color: #333333;">Contact informations</h2>
+    <p style="color: #555555;">Prénom : ${firstName}</p>
+    <p style="color: #555555;">Nom : ${lastName}</p>
+    <p style="color: #555555;">Adresse Mail : ${sender}</p>
+    <p style="color: #555555;">Numéro de téléphone : ${phoneNumber}</p>
+</div>
+</body>
+</html>

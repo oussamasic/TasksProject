@@ -1,0 +1,16 @@
+
+
+### send contact mail
+POST http://localhost:8080/api/contact-us
+accept: application/json
+content-type: application/json
+
+{
+
+    "sender" : "oussama@mail.com",
+    "lastName" : "zerouali",
+    "firstName" : "oussama",
+    "mailBody" :"hello hello",
+    "phoneNumber" : "+11111111111"
+
+}
