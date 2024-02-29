@@ -1,5 +1,6 @@
 /*
- * <OZ TASKS>
+ *
+ *  <OZ TASKS>
  * <project to manage user tasks>
  * Copyright (C) <2023>  <ZEROUALI Oussama>
  *
@@ -15,6 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
  */
 
 import { CommonModule } from '@angular/common';
@@ -31,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ContactUsComponent } from './component/contact-us/contact-us.component';
 import { LoginUserComponent } from './component/login-user/login-user.component';
 import { TaskCreateComponent } from './component/task-create/task-create.component';
 import { TaskDetailsComponent } from './component/task-details/task-details.component';
@@ -42,7 +45,7 @@ import { TaskService } from './service/task.service';
 import { UserService } from './service/user.service';
 
 @NgModule({
-  declarations: [AppComponent, TasksListComponent, TaskCreateComponent, TaskDetailsComponent, LoginUserComponent],
+  declarations: [AppComponent, TasksListComponent, TaskCreateComponent, TaskDetailsComponent, LoginUserComponent, ContactUsComponent],
   imports: [
     CommonModule,
     BrowserModule,

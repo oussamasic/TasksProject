@@ -48,6 +48,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/users/login").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/users/tasks/web-flux-report").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/contact-us").permitAll()
                 .anyRequest()
                 .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)

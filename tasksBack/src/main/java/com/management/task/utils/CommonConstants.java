@@ -39,4 +39,8 @@ public class CommonConstants {
     public static final String LOGIN = "/login";
     public static final String USER_TASKS = "/{userId}/tasks";
     public static final String USER_TASK_DETAILS = "/{userId}/tasks/{taskId}";
+
+    /*USERS*/
+    public static final String CONTACT_US = "/contact-us";
+
 }
