@@ -28,7 +28,7 @@
 - Junit 5 and Mockito 5
 - Maven
 ## FRONTEND :
-- Angular 15
+- Angular 17
 - TypeScript
 - BootStrap
 - Karma
@@ -39,7 +39,7 @@
 - Intellij or Eclipse
 - VsCode
 - Java 17 or higher 
-- Angular 15 or higher
+- Angular 17 or higher
 
 # Steps to run the project
 - Install `MongoDB` on your machine, follow the next [steps](https://osz-technology.blogspot.com/2023/03/how-to-install-mongodb-on-ubuntu-2204.html)
