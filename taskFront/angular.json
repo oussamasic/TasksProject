@@ -66,18 +66,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "taskFront:build"
+            "buildTarget": "taskFront:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "taskFront:build:production"
+              "buildTarget": "taskFront:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "taskFront:build"
+            "buildTarget": "taskFront:build"
           }
         },
         "test": {
