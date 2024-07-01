@@ -123,8 +123,8 @@
           }
         }
       }
-    }},
-  "defaultProject": "taskFront",
+    }
+  },
   "cli": {
     "analytics": false
   }
