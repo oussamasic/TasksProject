@@ -59,12 +59,12 @@ public class ContactService {
     }
 
     public void sendContactEmail(ContactMailDto contactMailDto) {
-        LOGGER.info("Sending email request");
+        LOGGER.debug("Sending email request");
         if(Objects.isNull(contactMailDto)) {
             LOGGER.error("You can not send the email");
             throw new BadRequestException("You can not send the email");
         }
-        LOGGER.info("Sending contact email from : {} {}",
+        LOGGER.debug("Sending contact email from : {} {}",
             contactMailDto.getFirstName(), contactMailDto.getLastName());
 
         String emailContent;
@@ -75,7 +75,7 @@ public class ContactService {
             mailMessage.setRecipients(Message.RecipientType.TO, recipient);
             mailMessage.setSubject(CONTACT_MAIL);
 
-            LOGGER.info("read the mail template file");
+            LOGGER.debug("read the mail template file");
             emailContent = FileReader.loadFileContent("contact-us.html");
 
             emailContent = emailContent.replace("${lastName}", contactMailDto.getLastName().toUpperCase());
@@ -88,7 +88,7 @@ public class ContactService {
 
             MimeMultipart multipart = new MimeMultipart("related");
 
-            LOGGER.info("The mail html part");
+            LOGGER.debug("The mail html part");
             BodyPart messageBodyPart = new MimeBodyPart();
 
             messageBodyPart.setContent(emailContent, "text/html");

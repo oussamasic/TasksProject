@@ -1,42 +1,14 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: manage user's tasks Application
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: groupId
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-  data:
-    mongodb:
-      database: manageTasksDB
-      port: 27017
   webflux:
     multipart:
       max-in-memory-size: 512KB
       max-parts: 3
       max-disk-usage-per-part: 1024KB
       max-headers-size: 5KB
-
-
-
-kafka:
-  bootstrapAddress: localhost:9092
-  general:
-    topic:
-      name: topicName
-      group:
-        id: groupId
-  user:
-    topic:
-      name: topicUser
-      group:
-        id: userGroupId
 
 logging:
   level:

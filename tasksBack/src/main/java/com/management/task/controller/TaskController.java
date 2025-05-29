@@ -60,17 +60,17 @@ public class TaskController {
         List<Task> taskList = new ArrayList<>();
 
         if(Objects.isNull(status)) {
-            LOGGER.info("Get All Tasks");
+            LOGGER.debug("Get All Tasks");
             taskList =  taskService.getAll();
         }
 
         else if(status.equals("complete")) {
-            LOGGER.info("Get All Complete Tasks");
+            LOGGER.debug("Get All Complete Tasks");
             taskList =  taskService.getAllCompleteTasks();
         }
 
         else if(status.equals("incomplete")) {
-            LOGGER.info("Get All InComplete Tasks");
+            LOGGER.debug("Get All InComplete Tasks");
             taskList = taskService.getAllInCompleteTasks();
         }
 
@@ -79,38 +79,38 @@ public class TaskController {
 
     @GetMapping(CommonConstants.PATH_ID)
     public Task getTaskById(final @PathVariable("taskId") String id) {
-        LOGGER.info("Get task by Id {} " , id);
+        LOGGER.debug("Get task by Id {} " , id);
         return taskService.getTaskById(id);
     }
 
     @PutMapping(CommonConstants.PATH_ID)
     public void updateTask(final @PathVariable("taskId") String id, @RequestBody @Valid final Task task) {
-        LOGGER.info("Update task by Id {} ", id);
+        LOGGER.debug("Update task by Id {} ", id);
         UtilsFunctions.checkDescription(task);
         taskService.updateTask(task,id);
     }
 
     @PutMapping(CommonConstants.PATH_ID + "/complete")
     public void completeTask(final @PathVariable("taskId") String id) {
-        LOGGER.info("Complete a task by Id {} ", id);
+        LOGGER.debug("Complete a task by Id {} ", id);
         taskService.completeTask(id);
     }
 
     @PutMapping(CommonConstants.PATH_ID + "/incomplete")
     public void inCompleteTask(final @PathVariable("taskId") String id) {
-        LOGGER.info("inComplete a task by Id {} " , id);
+        LOGGER.debug("inComplete a task by Id {} " , id);
         taskService.inCompleteTask(id);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID + "/delete")
     public void deleteTask(final @PathVariable("taskId") String id) {
-        LOGGER.info("Delete task by Id {} " ,id);
+        LOGGER.debug("Delete task by Id {} " ,id);
         taskService.deleteTask(id);
     }
 
     @PostMapping()
     public void createTask(final @Valid @RequestBody Task task) {
-        LOGGER.info("Create a Task");
+        LOGGER.debug("Create a Task");
         taskService.createTask(task);
     }
 
@@ -121,17 +121,17 @@ public class TaskController {
         List<Task> taskList = new ArrayList<>();
 
         if(Objects.isNull(status)) {
-            LOGGER.info("Get All paginated Tasks");
+            LOGGER.debug("Get All paginated Tasks");
             taskList =  taskService.getAllPaginatedTasks(size, page);
         }
 
         else if(status.equals("complete")) {
-            LOGGER.info("Get All paginated Complete Tasks");
+            LOGGER.debug("Get All paginated Complete Tasks");
             taskList =  taskService.getAllPaginatedCompletedTasks(size, page);
         }
 
         else if(status.equals("incomplete")) {
-            LOGGER.info("Get All paginated InComplete Tasks");
+            LOGGER.debug("Get All paginated InComplete Tasks");
             taskList = taskService.getAllPaginatedInCompletedTasks(size, page);
         }
 

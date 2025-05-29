@@ -49,7 +49,7 @@ public class ContactController {
 
     @PostMapping()
     public void sendContactEmail(final @Valid @RequestBody ContactMailDto contactMailDto) {
-        LOGGER.info("Send contact email");
+        LOGGER.debug("Send contact email");
         contactService.sendContactEmail(contactMailDto);
 
     }

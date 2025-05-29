@@ -68,19 +68,19 @@ public class UserController {
 
     @PostMapping()
     public void createUser(final @Valid @RequestBody User user) {
-        LOGGER.info("Create User");
+        LOGGER.debug("Create User");
         userService.createUser(user);
     }
 
     @PostMapping(CommonConstants.LOGIN)
     public ResponseEntity<String> userLogin(final @Valid @RequestBody User user) {
-        LOGGER.info("login User");
+        LOGGER.debug("login User");
         return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
     }
 
     @PostMapping(CommonConstants.LOGOUT)
     public void userLogout(@RequestHeader(value = "Authorization") final String userToken) {
-        LOGGER.info("logout User");
+        LOGGER.debug("logout User");
         if (Objects.isNull(userToken)) {
             LOGGER.error("The logout operation can't be done");
             throw new BadRequestException("The logout operation can't be done");
@@ -99,46 +99,46 @@ public class UserController {
     @PostMapping(CommonConstants.USER_TASKS)
     public void createUserTask(@RequestBody Task task, @PathVariable("userId") String userId)
         throws BadRequestException, UnAuthorizedException {
-        LOGGER.info("Create a task for an user");
+        LOGGER.debug("Create a task for an user");
         userService.createUserTask(task, userId);
     }
 
     @GetMapping(CommonConstants.USER_TASKS)
     public List<Task> getAllUserTasks(@PathVariable("userId") String userId) {
-        LOGGER.info("get all the user tasks");
+        LOGGER.debug("get all the user tasks");
         return userService.getAllUserTasks(userId);
     }
 
     @GetMapping(CommonConstants.USER_TASK_DETAILS)
     public Task getUserTaskDetails(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
-        LOGGER.info("get a task details of an user");
+        LOGGER.debug("get a task details of an user");
         return userService.getUserTaskDetails(taskId, userId);
     }
 
     @PutMapping(CommonConstants.USER_TASK_DETAILS)
     public void updateUserTask(@RequestBody Task task, @PathVariable("taskId") String taskId,
         @PathVariable("userId") String userId) {
-        LOGGER.info("update the task");
+        LOGGER.debug("update the task");
         userService.updateUserTask(task, taskId, userId);
 
     }
 
     @DeleteMapping(CommonConstants.USER_TASK_DETAILS)
     public void deleteUserTask(@PathVariable("taskId") String taskId, @PathVariable("userId") String userId) {
-        LOGGER.info("Delete the task");
+        LOGGER.debug("Delete the task");
         userService.deleteUserTask(taskId, userId);
     }
 
     @DeleteMapping(CommonConstants.USER_TASKS)
     public void deleteAllUserTasks(@PathVariable("userId") String userId) {
-        LOGGER.info("Delete all the user tasks");
+        LOGGER.debug("Delete all the user tasks");
         userService.deleteAllUserTasks(userId);
     }
 
     @GetMapping()
     public List<User> getAllPaginatedUsers(@RequestParam(defaultValue = "5") int size,
         @RequestParam(defaultValue = "0") int page) {
-        LOGGER.info("get All Paginated Users from page : {} with {} as size ", page, size);
+        LOGGER.debug("get All Paginated Users from page : {} with {} as size ", page, size);
         return userService.getAllPaginatedUsers(size, page);
     }
 
@@ -147,7 +147,7 @@ public class UserController {
     public ResponseEntity<byte[]> downloadUserTasksReportNormal(@PathVariable("userId") String userId)
         throws DocumentException {
 
-        LOGGER.info("Download the task list of user with id : {}", userId);
+        LOGGER.debug("Download the task list of user with id : {}", userId);
 
         ByteArrayOutputStream pdfStream =
             userService.downloadUserTasksReportNormal();
@@ -157,7 +157,7 @@ public class UserController {
 
     @GetMapping(params = "email")
     public User findUserByEmail(@RequestParam final String email) {
-        LOGGER.info("Find the user by the email : {}", email);
+        LOGGER.debug("Find the user by the email : {}", email);
         return userService.findUserByEmail(email);
     }
 
@@ -166,7 +166,7 @@ public class UserController {
     public ResponseEntity<Mono<byte[]>> downloadWebFluxReport()
         throws DocumentException {
 
-        LOGGER.info("Download the task list of user");
+        LOGGER.debug("Download the task list of user");
 
         ByteArrayOutputStream pdfStream =
             userService.downloadUserTasksReportNormal();

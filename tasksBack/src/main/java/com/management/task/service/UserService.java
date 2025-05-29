@@ -94,7 +94,7 @@ public class UserService {
     }
 
     public void createUser(User user) {
-        LOGGER.info("creating user");
+        LOGGER.debug("creating user");
         if(Objects.isNull(user)) {
             LOGGER.warn(REQUEST_BODY_MANDATORY);
             throw new BadRequestException(REQUEST_BODY_MANDATORY);
@@ -122,7 +122,7 @@ public class UserService {
 
         userRepository.save(userModel);
 
-        LOGGER.info("User created with id : {} ", userModel.getId());
+        LOGGER.debug("User created with id : {} ", userModel.getId());
         this.userProducerService.createUSer(user);
 
     }
@@ -133,7 +133,7 @@ public class UserService {
     }
 
     public String login(User user) {
-        LOGGER.info("Process : user login");
+        LOGGER.debug("Process : user login");
         if(Objects.isNull(user)) {
             LOGGER.warn(REQUEST_BODY_MANDATORY);
             throw new BadRequestException(REQUEST_BODY_MANDATORY);
@@ -160,13 +160,13 @@ public class UserService {
             throw new BadRequestException("Bad password");
         }
 
-        LOGGER.info("Generating JWT token for the user");
+        LOGGER.debug("Generating JWT token for the user");
         return jwtService.generateToken(userModel);
 
     }
 
     public void logout(String jwtToken) {
-        LOGGER.info("Process : user logout");
+        LOGGER.debug("Process : user logout");
 
         jwtService.logout(jwtToken);
     }
@@ -180,7 +180,7 @@ public class UserService {
     }
 
     public void createUserTask(Task task, String userId) {
-        LOGGER.info("Create a task for the user : {}", userId);
+        LOGGER.debug("Create a task for the user : {}", userId);
 
         User authenticatedUser = getAuthenticatedUser();
         if(!Objects.equals(authenticatedUser.getId(), userId)) {
@@ -199,7 +199,7 @@ public class UserService {
     }
 
     public List<Task> getAllUserTasks(String userId) {
-        LOGGER.info("get all the tasks of the user : {}", userId);
+        LOGGER.debug("get all the tasks of the user : {}", userId);
         User authenticatedUser = getAuthenticatedUser();
         if(!Objects.equals(authenticatedUser.getId(), userId)) {
             LOGGER.error("You are not authorized to get the list of tasks");
@@ -215,7 +215,7 @@ public class UserService {
     }
 
     public Task getUserTaskDetails(String taskId, String userId) {
-        LOGGER.info("get the task details {} of the user : {}", taskId, userId);
+        LOGGER.debug("get the task details {} of the user : {}", taskId, userId);
         User authenticatedUser = getAuthenticatedUser();
         if(!Objects.equals(authenticatedUser.getId(), userId)) {
             LOGGER.error("You are not authorized to get the details  of this task");
@@ -231,7 +231,7 @@ public class UserService {
     }
 
     public void updateUserTask(Task task,  String taskId, String userId) {
-        LOGGER.info("update the task {} ", taskId);
+        LOGGER.debug("update the task {} ", taskId);
         User authenticatedUser = getAuthenticatedUser();
         if(!Objects.equals(authenticatedUser.getId(), userId)) {
             LOGGER.error("You are not authorized to update this task");
@@ -255,7 +255,7 @@ public class UserService {
     }
 
     public void deleteUserTask(String taskId, String userId) {
-        LOGGER.info("Delete the task {} ", taskId);
+        LOGGER.debug("Delete the task {} ", taskId);
         User authenticatedUser = getAuthenticatedUser();
         if(!Objects.equals(authenticatedUser.getId(), userId)) {
             LOGGER.error("You are not authorized to delete this task");
@@ -271,7 +271,7 @@ public class UserService {
     }
 
     public void deleteAllUserTasks(String userId) {
-        LOGGER.info("Delete all the tasks of the user : {} ", userId);
+        LOGGER.debug("Delete all the tasks of the user : {} ", userId);
 
         User authenticatedUser = getAuthenticatedUser();
         if(!Objects.equals(authenticatedUser.getId(), userId)) {
@@ -283,7 +283,7 @@ public class UserService {
     }
 
     public List<User> getAllPaginatedUsers(int size, int page) {
-        LOGGER.info("get All Paginated Users, page : {} and size {} ", page, size);
+        LOGGER.debug("get All Paginated Users, page : {} and size {} ", page, size);
         List<User> userList = new ArrayList<>();
         Pageable pageable = PageRequest.of(page, size);
         userRepository.findAll(pageable).stream().forEach(userModel -> {
@@ -295,7 +295,7 @@ public class UserService {
     }
 
     public ByteArrayOutputStream downloadUserTasksReportNormal() throws DocumentException {
-        LOGGER.info("Download the task list of user");
+        LOGGER.debug("Download the task list of user");
 
         User authenticatedUser = getAuthenticatedUser();
         if(Objects.isNull(authenticatedUser)) {
@@ -407,7 +407,7 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        LOGGER.info("Search user with email : {}", email);
+        LOGGER.debug("Search user with email : {}", email);
 
         UserModel userModel = getUserByEmail(email);
 

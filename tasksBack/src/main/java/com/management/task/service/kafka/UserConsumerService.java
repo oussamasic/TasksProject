@@ -44,14 +44,14 @@ public class UserConsumerService {
 
     @KafkaListener(topics = "${kafka.general.topic.name}", groupId = "${kafka.general.topic.group.id}")
     public void consume(String message) {
-        LOGGER.info("Message received : {}", message);
+        LOGGER.debug("Message received : {}", message);
     }
 
     @KafkaListener(topics = "${kafka.user.topic.name}", groupId = "${kafka.user.topic.group.id}",
         containerFactory = "userKafkaListenerContainerFactory")
     public void consume(User user) {
-        LOGGER.info("user email received : {}", user.getEmail());
-        LOGGER.info("user firstName, lastName received : {} {}",
+        LOGGER.debug("user email received : {}", user.getEmail());
+        LOGGER.debug("user firstName, lastName received : {} {}",
                 user.getFirstName(), user.getLastName());
         EmailDetailsDto emailDetailsDto = new EmailDetailsDto();
         emailDetailsDto.setEmailSubject(CREATED_USE_WELCOME_MAIL);

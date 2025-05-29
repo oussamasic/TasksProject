@@ -37,6 +37,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,14 +59,14 @@ public class TaskService {
     }
 
     public List<Task> getAll() {
-        LOGGER.info("get all Task");
+        LOGGER.debug("get all Task");
         return taskRepository.findAll().stream().map(TaskConverter::convertTaskModelToTaskDto)
             .toList();
 
         }
 
     public void createTask(Task taskDto) {
-        LOGGER.info("create a task");
+        LOGGER.debug("create a task");
         User authenticatedUser = getAuthenticatedUser();
         if(Objects.isNull(authenticatedUser)) {
             LOGGER.error("You are not authorized to download the reports");
@@ -77,7 +79,7 @@ public class TaskService {
     }
 
     public Task getTaskById(String id) {
-        LOGGER.info("get a task by id : {}", id);
+        LOGGER.debug("get a task by id : {}", id);
         Optional<TaskModel> taskModelOptional = taskRepository.findById(id);
         if(taskModelOptional.isEmpty()) {
             LOGGER.error(TASK_NOT_FOUND);
@@ -86,7 +88,7 @@ public class TaskService {
         return TaskConverter.convertTaskModelToTaskDto(taskModelOptional.get());
     }
     public void updateTask(Task taskDto, String id) {
-        LOGGER.info("update a task");
+        LOGGER.debug("update a task");
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
             LOGGER.error(TASK_NOT_FOUND);
@@ -98,19 +100,19 @@ public class TaskService {
     }
 
     public List<Task> getAllCompleteTasks() {
-        LOGGER.info("get all completed task");
+        LOGGER.debug("get all completed task");
         return taskRepository.findByComplete(true).stream().map(TaskConverter::convertTaskModelToTaskDto)
             .toList();
     }
 
     public List<Task> getAllInCompleteTasks() {
-        LOGGER.info("get all uncompleted tasks");
+        LOGGER.debug("get all uncompleted tasks");
         return taskRepository.findByComplete(false).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
     }
 
     public void completeTask(String id) {
-        LOGGER.info("complete th task with id : {}", id);
+        LOGGER.debug("complete th task with id : {}", id);
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
             LOGGER.error(TASK_NOT_FOUND);
@@ -121,7 +123,7 @@ public class TaskService {
     }
 
     public void inCompleteTask(String id) {
-        LOGGER.info("make incomplete th task with id : {}", id);
+        LOGGER.debug("make incomplete th task with id : {}", id);
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
             LOGGER.error(TASK_NOT_FOUND);
@@ -132,7 +134,7 @@ public class TaskService {
     }
 
     public void deleteTask(String id) {
-        LOGGER.info("delete th task with id : {}", id);
+        LOGGER.debug("delete th task with id : {}", id);
         Optional<TaskModel> taskDtoOptional = taskRepository.findById(id);
         if(taskDtoOptional.isEmpty()) {
             LOGGER.error(TASK_NOT_FOUND);
@@ -142,7 +144,7 @@ public class TaskService {
     }
 
     public List<Task> getAllPaginatedTasks(int size, int page) {
-        LOGGER.info("get all Paginated Task");
+        LOGGER.debug("get all Paginated Task");
         Pageable pageable = PageRequest.of(page, size);
         return taskRepository.findAll(pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
@@ -150,7 +152,7 @@ public class TaskService {
     }
 
     public List<Task> getAllPaginatedCompletedTasks(int size, int page) {
-        LOGGER.info("get all Paginated Completed Task");
+        LOGGER.debug("get all Paginated Completed Task");
         Pageable pageable = PageRequest.of(page, size);
         return taskRepository.findByComplete(true, pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
@@ -158,7 +160,7 @@ public class TaskService {
     }
 
     public List<Task> getAllPaginatedInCompletedTasks(int size, int page) {
-        LOGGER.info("get all Paginated InCompleted Task");
+        LOGGER.debug("get all Paginated InCompleted Task");
         Pageable pageable = PageRequest.of(page, size);
         return taskRepository.findByComplete(false, pageable).stream().map(TaskConverter::convertTaskModelToTaskDto)
                 .toList();
@@ -166,6 +168,9 @@ public class TaskService {
     }
 
     public User getAuthenticatedUser() {
+        LocalDateTime dd = LocalDateTime.now();
+        Date tt = new Date(String.valueOf(dd));
+        tt.getTime();
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
             return (User) auth.getPrincipal();

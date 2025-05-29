@@ -17,7 +17,7 @@
 
 # Technologies Used
 ## BACKEND :
-- JAVA 17
+- JAVA 21
 - Spring Boot 3.x.x
 - Spring Data
 - Spring Security 6.x.x
@@ -38,7 +38,7 @@
 ## Prerequisites :
 - Intellij or Eclipse
 - VsCode
-- Java 17 or higher 
+- Java 21 or higher 
 - Angular 17 or higher
 
 # Steps to run the project

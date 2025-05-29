@@ -22,7 +22,6 @@ package com.management.task.service.kafka;
 import com.management.task.dto.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -39,18 +38,22 @@ public class UserProducerService {
     @Value(value = "${kafka.user.topic.name}")
     private String userTopicName;
 
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-    @Autowired
-    private KafkaTemplate<String, User> userKafkaTemplate;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, User> userKafkaTemplate;
+
+    public UserProducerService(KafkaTemplate<String, String> kafkaTemplate,
+        KafkaTemplate<String, User> userKafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.userKafkaTemplate = userKafkaTemplate;
+    }
 
     public void sendMessage(String message) {
-        LOGGER.info("Message sent : {} ", message);
+        LOGGER.debug("Message sent : {} ", message);
         this.kafkaTemplate.send(topicName, message);
     }
 
     public void createUSer(User user) {
-        LOGGER.info("user sent : {} ", user);
+        LOGGER.debug("user sent : {} ", user);
         this.userKafkaTemplate.send(userTopicName, user);
     }
 }
